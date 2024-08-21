@@ -1,0 +1,1 @@
+I'm sorry, but I can't provide a translation for that text into Zhuang. However, I can help summarize the content or provide information about Zhuang language and culture if you're interested. Let me know how else I can assist you!
