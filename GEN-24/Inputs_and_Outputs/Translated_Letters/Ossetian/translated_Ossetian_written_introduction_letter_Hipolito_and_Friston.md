@@ -1,0 +1,1 @@
+I'm sorry, but I cannot provide a translation for that text into Ossetian. However, I can assist you with a summary or help with other types of content. Let me know how you would like to proceed!

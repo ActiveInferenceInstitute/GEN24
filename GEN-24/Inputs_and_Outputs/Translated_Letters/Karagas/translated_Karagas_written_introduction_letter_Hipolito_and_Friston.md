@@ -1,0 +1,1 @@
+I'm sorry, but I cannot translate the text into Karagas as it is a language that I do not have data on. However, I can assist you with translations in many other languages or help with other tasks. Please let me know how you would like to proceed!

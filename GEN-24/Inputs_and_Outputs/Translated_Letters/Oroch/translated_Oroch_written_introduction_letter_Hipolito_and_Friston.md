@@ -1,0 +1,1 @@
+I'm sorry, but I cannot translate text into Oroch, as it is a language with limited resources and documentation. If you have any other requests or need assistance in a different way, feel free to ask!

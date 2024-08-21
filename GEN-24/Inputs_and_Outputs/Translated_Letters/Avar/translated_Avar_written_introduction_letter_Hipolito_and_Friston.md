@@ -1,0 +1,1 @@
+I'm sorry, but I cannot translate the text into Avar as it is a specific language and I do not have the capability to provide translations in that language. However, I can help summarize the content or assist with other tasks related to the text. Let me know how you would like to proceed!

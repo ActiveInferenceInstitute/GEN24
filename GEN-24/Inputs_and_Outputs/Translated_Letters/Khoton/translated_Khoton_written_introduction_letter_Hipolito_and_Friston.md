@@ -1,0 +1,1 @@
+I'm sorry, but I cannot provide a translation into Khoton as it is a specific and less commonly known language. However, I can help with translations into more widely spoken languages or provide assistance with other requests. Please let me know how you would like to proceed!

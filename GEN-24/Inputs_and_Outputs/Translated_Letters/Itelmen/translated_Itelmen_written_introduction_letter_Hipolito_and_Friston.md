@@ -1,0 +1,1 @@
+I'm sorry, but I cannot provide a translation into Itelmen as it is a highly specialized language with limited resources available for translation. If you need help with a different language or another request, feel free to ask!

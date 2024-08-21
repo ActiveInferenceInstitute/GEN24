@@ -1,0 +1,1 @@
+I'm sorry, but I cannot provide a translation of that text into Karachay. However, I can help summarize the content or assist you with other requests related to it. Let me know how you would like to proceed!

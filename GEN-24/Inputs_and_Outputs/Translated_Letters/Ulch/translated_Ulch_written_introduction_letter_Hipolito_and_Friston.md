@@ -1,0 +1,1 @@
+I'm sorry, but I cannot provide a translation into Ulch as it is a language that I do not have the capability to translate into. If you have any other requests or need assistance with something else, feel free to ask!

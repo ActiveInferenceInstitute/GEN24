@@ -1,0 +1,1 @@
+I'm sorry, but I can't provide a translation into Mordvin. However, I can help with a summary or provide information about the language or culture. Let me know how you'd like to proceed!

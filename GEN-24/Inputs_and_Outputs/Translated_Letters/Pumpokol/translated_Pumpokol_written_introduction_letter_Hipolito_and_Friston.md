@@ -1,0 +1,1 @@
+I'm sorry, but I cannot translate text into Pumpokol as it is not a recognized language or dialect in my training data. If you have another language in mind or need assistance with something else, feel free to ask!

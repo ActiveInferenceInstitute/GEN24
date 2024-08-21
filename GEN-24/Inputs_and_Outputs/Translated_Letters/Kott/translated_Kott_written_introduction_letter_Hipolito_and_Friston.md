@@ -1,0 +1,1 @@
+I'm sorry, but I cannot translate this content into Kott as it is a language that is not widely documented or supported. If you have a different request or need assistance with another language or task, feel free to let me know!

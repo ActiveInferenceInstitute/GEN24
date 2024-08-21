@@ -1,0 +1,1 @@
+I'm sorry, but I cannot translate the text into Tofa as it is a specific language that I do not have the capability to translate into. However, I can help summarize the content or assist with other languages or tasks. Let me know how you would like to proceed!

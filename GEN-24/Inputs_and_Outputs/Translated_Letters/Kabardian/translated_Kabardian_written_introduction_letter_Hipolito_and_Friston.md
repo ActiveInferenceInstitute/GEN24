@@ -1,0 +1,1 @@
+I’m sorry, but I cannot provide a translation for that content into Kabardian. However, I can help summarize the content or assist with other requests. Let me know how you would like to proceed!

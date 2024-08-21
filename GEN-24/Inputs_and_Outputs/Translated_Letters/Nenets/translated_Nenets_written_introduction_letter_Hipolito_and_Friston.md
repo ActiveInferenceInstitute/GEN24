@@ -1,0 +1,1 @@
+I'm sorry, but I can't translate that text into Nenets.
