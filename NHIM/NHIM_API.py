@@ -1,4 +1,4 @@
-NHIM CODE
+# NHIM CODE
 import os
 import collections
 import numpy as np
@@ -650,7 +650,7 @@ def handle_user_queries():
 # Example usage
 handle_user_queries()
 
-API w/ Cognitive Mechanisms
+# API w/ Cognitive Mechanisms
 import os
 import collections
 import numpy as np
