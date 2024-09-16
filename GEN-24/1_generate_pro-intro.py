@@ -11,7 +11,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 ENTITY_1_FILE = os.path.join(SCRIPT_DIR, 'Inputs_and_Outputs', 'Entity', 'Hipolito', 'Hipolito.py')
 ENTITY_2_FILE = os.path.join(SCRIPT_DIR, 'Inputs_and_Outputs', 'Entity', 'Friston', 'Friston.py')
-ENTITY_3_FILE = os.path.join(SCRIPT_DIR, 'Inputs_and_Outputs', 'Entity', 'Bancroft', 'Bancroft.py')
+ENTITY_3_FILE = os.path.join(SCRIPT_DIR, 'Inputs_and_Outputs', 'Entity', 'Shyaka', 'Shyaka.py')
 ORG_1_FILE = os.path.join(SCRIPT_DIR, 'Inputs_and_Outputs', 'Organization', 'Active_Inference_Institute', 'Active_Inference_Institute.py')
 ORG_2_FILE = os.path.join(SCRIPT_DIR, 'Inputs_and_Outputs', 'Organization', 'AIME', 'AIME.py')
 

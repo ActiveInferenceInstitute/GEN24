@@ -15,24 +15,8 @@ OUTPUT_DIR = os.path.join(base_dir, "Inputs_and_Outputs", "Translated_Letters")
 
 # Define target languages
 TARGET_LANGUAGES = [
-    'Spanish', 'French', 'Hindi', 'Chinese', 'Arabic', 'Portuguese', 'Bengali', 'Russian', 'Japanese', 'Punjabi',
-    'German', 'Javanese', 'Wu', 'Malay', 'Telugu', 'Vietnamese', 'Korean', 'Tamil', 'Marathi', 'Urdu', 'Turkish',
-    'Italian', 'Yue', 'Thai', 'Gujarati', 'Jin', 'Southern Min', 'Persian', 'Polish', 'Pashto', 'Kannada', 'Xiang',
-    'Malayalam', 'Sundanese', 'Hausa', 'Odia', 'Burmese', 'Hakka', 'Ukrainian', 'Bhojpuri', 'Tagalog', 'Yoruba',
-    'Maithili', 'Uzbek', 'Sindhi', 'Amharic', 'Fula', 'Romanian', 'Oromo', 'Igbo', 'Azerbaijani', 'Awadhi', 'Gan',
-    'Cebuano', 'Dutch', 'Kurdish', 'Serbo-Croatian', 'Malagasy', 'Saraiki', 'Nepali', 'Sinhalese', 'Chittagonian',
-    'Zhuang', 'Khmer', 'Turkmen', 'Assamese', 'Madurese', 'Somali', 'Marwari', 'Magahi', 'Haryanvi', 'Hungarian',
-    'Chhattisgarhi', 'Greek', 'Chewa', 'Deccan', 'Akan', 'Kazakh', 'Northern Min', 'Sylheti', 'Zulu', 'Czech',
-    'Kinyarwanda', 'Dhundhari', 'Haitian Creole', 'Eastern Min', 'Ilocano', 'Quechua', 'Kirundi', 'Swedish', 'Hmong',
-    'Shona', 'Uyghur', 'Hiligaynon', 'Mossi', 'Xhosa', 'Belarusian', 'Balochi', 'Konkani', 'Tigrinya', 'Bosnian',
-    'Latvian', 'Lithuanian', 'Slovak', 'Slovenian', 'Estonian', 'Finnish', 'Norwegian', 'Danish', 'Icelandic', 
-    'Maltese', 'Luxembourgish', 'Irish', 'Welsh', 'Scottish Gaelic', 'Macedonian', 'Montenegrin', 'Albanian', 
-    'Armenian', 'Georgian', 'Mongolian', 'Tajik', 'Kyrgyz', 'Tatar', 'Bashkir', 'Chuvash', 'Ossetian', 'Abkhaz', 
-    'Avar', 'Chechen', 'Ingush', 'Kabardian', 'Balkar', 'Karachay', 'Kumyk', 'Nogai', 'Adyghe', 'Udmurt', 'Mari', 
-    'Mordvin', 'Komi', 'Yakut', 'Buryat', 'Kalmyk', 'Tuva', 'Altai', 'Khakas', 'Shor', 'Tuvan', 'Evenki', 'Nanai', 
-    'Nivkh', 'Orok', 'Oroch', 'Ulch', 'Negidal', 'Koryak', 'Chukchi', 'Itelmen', 'Yukaghir', 'Dolgan', 'Nganasan', 
-    'Nenets', 'Enets', 'Selkup', 'Ket', 'Yugh', 'Kott', 'Arin', 'Assan', 'Pumpokol', 'Kamas', 'Mator', 'Tofa', 
-    'Soyot', 'Karagas', 'Khoton', 'Uriankhai', 'Tsaatan', 'Dukha', 'Tuvan', 'Tofalar', 'Soyot', 'Khoton', 'Uriankhai'
+    'English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Russian', 'Portuguese', 'Arabic',
+    'Hindi', 'Bengali', 'Punjabi', 'Korean', 'Turkish', 'Vietnamese', 'Italian', 'Thai', 'Gujarati', 'Malay'
 ]
 
 def process_introduction_letter(input_file: str, output_dir: str, llm_params: dict, language: str) -> None:
