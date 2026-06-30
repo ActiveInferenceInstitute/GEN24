@@ -1,0 +1,34 @@
+# AII sidecar — InstituteOS metadata. Schema: instituteos.platform.aii_sidecar
+meta:
+  updated: '2026-06-30'
+repo:
+  name: GEN24
+  slug: gen24
+  full_name: ActiveInferenceInstitute/GEN24
+  description: Working/Exploring branch for GEN-24 project https://coda.io/d/Active-Blockference_dIvNESFmyj6/GEN-24_su2DYdSx#_luRI0xVN
+institute:
+  category: research-software
+  steward: Active Inference Institute
+ecosystem:
+  links:
+    github: https://github.com/ActiveInferenceInstitute/GEN24
+    website: https://www.activeinference.org
+artifacts:
+- path: README.md
+  kind: doc
+  description: Repository overview.
+- path: LICENSE
+  kind: doc
+  description: License.
+provenance:
+  license: MIT
+instituteos:
+  tags:
+  - gen24
+  - working
+  - exploring
+  - branch
+  - gen
+  - jupyter notebook
+capabilities:
+- notebooks
