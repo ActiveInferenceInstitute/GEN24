@@ -83,7 +83,12 @@ class BancroftWorldview:
 
     def digital_nation_model(self):
         """
-        Represents Jack Manning Bancroft's vision of a digital nation for global connectivity and support
+        Represents Jack Manning Bancroft's vision of a digital nation for global connectivity and support.
         """
         digital_nation_principles = {
-
+            "digital_nation": self.key_concepts["ai_and_technology"]["digital_nation"],
+            "mentoring_platforms": self.key_concepts["ai_and_technology"]["mentoring_platforms"],
+            "global_networks": self.key_concepts["ai_and_technology"]["global_networks"],
+            "technological_innovation": self.key_concepts["ai_and_technology"]["technological_innovation"],
+        }
+        return digital_nation_principles
