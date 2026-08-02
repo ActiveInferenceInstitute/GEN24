@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use GEN24, please cite the repository."
+title: "GEN24"
+type: software
+abstract: "Exploratory Active Inference Institute repository for LLM-assisted generation, translation, and synthetic domain artifacts."
+repository-code: "https://github.com/ActiveInferenceInstitute/GEN24"
+url: "https://github.com/ActiveInferenceInstitute/GEN24"
+license: MIT
+authors:
+  - name: "Active Inference Institute"
+keywords:
+  - "active inference"
+  - "generative AI"
+  - "synthetic domains"
+  - "translation"
