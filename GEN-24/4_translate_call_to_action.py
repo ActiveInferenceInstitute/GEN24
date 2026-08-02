@@ -115,7 +115,7 @@ def process_call_to_actions(output_dir: str, config: dict) -> None:
         # Get the API key using the get_api_key() function
         api_key = get_api_key()
         if not api_key:
-            raise ValueError("API key not found in .env or LLM_keys.key file")
+            raise ValueError("API key not found in LLM_keys.key")
 
         # Prepare LLM parameters
         llm_params = {**USER_CONFIG['llm_params'], 'api_key': api_key}
@@ -137,8 +137,7 @@ def process_call_to_actions(output_dir: str, config: dict) -> None:
 if __name__ == "__main__":
     logger.info("Starting script execution")
 
-    # Correct base_dir path that has the space after GEN24 space
-    base_dir = "/home/trim/Documents/GitHub/GEN24 /GEN-24/"
+    base_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Create a configuration dictionary
     config = {

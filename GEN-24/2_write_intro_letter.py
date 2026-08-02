@@ -69,7 +69,7 @@ def process_introduction_letters(input_file: str, output_dir: str, config: dict)
         # Get the API key using the new get_api_key() function
         api_key = get_api_key()
         if not api_key:
-            raise ValueError("API key not found in .env or LLM_keys.key file")
+            raise ValueError("API key not found in LLM_keys.key")
 
         # Prepare LLM parameters
         llm_params = {**USER_CONFIG['llm_params'], 'api_key': api_key}

@@ -57,7 +57,6 @@ USER_CONFIG = {
         'n': 1,
         'stream': False,
         'stop': None,
-        'api_key': read_api_key(API_KEY_FILE)  # Read the API key from the file
     }
 }
 

@@ -8,8 +8,8 @@ from config import USER_CONFIG
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Define the input directory and output directory
-base_dir = "/home/trim/Documents/GitHub/GEN24 /GEN-24/"
+# Define the input directory and output directory relative to this script.
+base_dir = os.path.dirname(os.path.abspath(__file__))
 INPUT_DIR = os.path.join(base_dir, "Inputs_and_Outputs", "Written_Introduction_Letter")
 OUTPUT_DIR = os.path.join(base_dir, "Inputs_and_Outputs", "Translated_Letters")
 
@@ -64,7 +64,7 @@ def process_introduction_letters(input_dir: str, output_dir: str, config: dict) 
         # Get the API key using the get_api_key() function
         api_key = get_api_key()
         if not api_key:
-            raise ValueError("API key not found in .env or LLM_keys.key file")
+            raise ValueError("API key not found in LLM_keys.key")
 
         # Prepare LLM parameters
         llm_params = {**USER_CONFIG['llm_params'], 'api_key': api_key}
@@ -93,9 +93,6 @@ def process_introduction_letters(input_dir: str, output_dir: str, config: dict) 
 
 if __name__ == "__main__":
     logger.info("Starting script execution")
-
-    # Define the base directory for configuration
-    base_dir = "/home/trim/Documents/Github/GEN24 /GEN-24/"
 
     # Create a configuration dictionary
     config = {
