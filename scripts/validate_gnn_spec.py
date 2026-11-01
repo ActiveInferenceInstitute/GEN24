@@ -126,12 +126,15 @@ def import_pinned_parser(gnn_root, commit):
     tmp = tempfile.TemporaryDirectory(prefix="gnn-pin-")
     with tarfile.open(fileobj=io.BytesIO(result.stdout)) as archive:
         archive.extractall(tmp.name, filter="data")
-    sys.path.insert(0, str(Path(tmp.name) / "src"))
+    tmp_path = Path(tmp.name).resolve()
+    sys.path.insert(0, str(tmp_path / "src"))
 
     from gnn.parsers.markdown_parser import MarkdownGNNParser  # noqa: E402
 
     module_path = Path(sys.modules[MarkdownGNNParser.__module__].__file__).resolve()
-    if not str(module_path).startswith(tmp.name):
+    # Resolve both sides: TMPDIR can sit behind a symlink (macOS /var ->
+    # /private/var), so a textual prefix comparison is not reliable.
+    if not module_path.is_relative_to(tmp_path):
         raise RuntimeError(f"parser was not imported from the pinned tree: {module_path}")
     return tmp, MarkdownGNNParser, module_path
 
