@@ -1,6 +1,5 @@
 import logging
 import os
-import openai
 from utils import load_file, save_file, generate_llm_response, get_api_key
 from config import USER_CONFIG
 

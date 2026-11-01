@@ -1,6 +1,6 @@
 # TO-DO — GEN24 documentation pass
 
-Last reviewed: 2026-08-02 (docs-deep review, see REVIEW_LOG_2026-08-02.md)
+Last reviewed: 2026-11-01 (current-API and GNN-alignment pass, see REVIEW_LOG_2026-08-02.md)
 
 Severity definitions:
 - **Minor** — typo, broken link, formatting, small doc/code drift fix.
@@ -8,6 +8,21 @@ Severity definitions:
 - **Major** — large doc system overhaul, cross-cutting refactors.
 
 Legend: `[ ]` open · `[x]` completed (✓ with commit) · `[~]` deferred (reason in notes)
+
+## Current-API and GNN-alignment pass (2026-11-01)
+
+- [x] ✓ Added the canonical discrete model of the NHIM inquiry loop, `NHIM/nhim_model.py` (NumPy only).
+- [x] ✓ Specified that model in Generalized Notation Notation: `NHIM/nhim_inquiry_agent.gnn.md`.
+- [x] ✓ Pinned the upstream parser revision and its file hashes in `NHIM/gnn-pin.json` (GNN `v5.0.3`, commit `8f293d9b`).
+- [x] ✓ Added `scripts/validate_gnn_spec.py`, which validates the spec against the pinned parser (never a live tree) and compares `A`/`B`/`C`/`D` with the implementation.
+- [x] ✓ Deduplicated `NHIM/NHIM_API.py` (every class was defined twice), removed undefined-name bugs, made heavy imports lazy, and put the interactive loop behind `if __name__ == "__main__":`.
+- [x] ✓ Added a test suite (`tests/`, 32 tests) covering the model, the spec and pin record, the NHIM sketch's deterministic paths, and the pipeline modules with a stubbed client.
+- [x] ✓ Added `requirements-dev.txt` and a CI workflow (`.github/workflows/ci.yml`) that runs compileall, pytest, and the pinned-parser validation.
+- [x] ✓ Made the model name current: `gpt-4o-mini` instead of the dated snapshot `gpt-4o-mini-2024-07-18`.
+- [x] ✓ Removed unused helpers: `config.read_api_key()`, `utils.setup_logging()`, `utils.setup_llm()`, `utils.batch_process_llm()`, `utils.extract_entity_files()`, `utils.extract_organization_files()`, and the unused `openai` imports in stages 2-4.
+- [x] ✓ Added `AGENTS.md` and `docs/gnn.md` with GNN signposting to the upstream integration and implementation guides and related fleet repositories.
+
+Still not done in this pass: live model calls (no key, no personal archives) and any training or fitting of the sketch's neural components.
 
 ## Minor
 
@@ -19,8 +34,8 @@ Legend: `[ ]` open · `[x]` completed (✓ with commit) · `[~]` deferred (reaso
 - [x] ✓ Add explicit `LLM_keys.key` to `.gitignore` (already covered by `*.key`; explicit entry documents intent). (commit: 00a1581)
 - [x] ✓ Document the 19-language script list vs 181-language artifact set, and the missing `English/` dir, in docs. (commit: 4a63fd8)
 - [~] Historical commit-message inaccuracy: `77b6cf7` says "CC-BY-4.0 LICENSE"; LICENSE is MIT since initial commit and `.aii/config.yaml` correctly says MIT. No file change needed — noted in REVIEW_LOG.
-- [~] Dead local `output_file_name`/`output_file_path` in `2_write_intro_letter.py::process_introduction_letters()`. Left as-is (no functional impact).
-- [~] `utils.setup_logging()` defaults to legacy `fieldshift2.log` name; unused by the live pipeline. Documented in docs/pipeline.md.
+- [~] Dead local `output_file_name`/`output_file_path` in `2_write_intro_letter.py::process_introduction_letters()`. Re-checked in the 2026-11-01 pass: both are used by the existing-output guard, so this was a stale finding and no change is needed.
+- [x] ✓ `utils.setup_logging()` removed in the 2026-11-01 pass together with the other unused helpers (`setup_llm`, `batch_process_llm`, `extract_entity_files`, `extract_organization_files`, `config.read_api_key`).
 
 ## Medium
 
@@ -39,14 +54,13 @@ Legend: `[ ]` open · `[x]` completed (✓ with commit) · `[~]` deferred (reaso
 ## Major
 
 - [x] ✓ Establish a documentation system where none existed: `docs/README.md` index + overview + pipeline + data-layout + NHIM + notebook pages, cross-linked with the README and folder READMEs. (commit: 4a63fd8)
-- [~] Deduplicate `NHIM/NHIM_API.py` (every class defined twice, ~lines 30-570 vs ~677-1160). Deferred: requires ML runtime deps (spacy, transformers, torch) and execution to validate; documented in `docs/nhim.md`.
-- [~] Add CI or markdown-link linting. Deferred: repo has no CI today and no test suite; introducing one is an owner decision.
+- [x] ✓ Deduplicate `NHIM/NHIM_API.py` (every class defined twice, ~lines 30-570 vs ~677-1160). Completed 2026-11-01 without the heavy runtime: the surviving definitions are the ones Python actually resolved, the deterministic paths are covered by `tests/test_nhim_api.py`, and the language-model paths stay untouched. See `docs/nhim.md`.
+- [x] ✓ Add CI and a test suite. Completed 2026-11-01: `tests/` (32 tests, no key/network), `requirements-dev.txt`, `.github/workflows/ci.yml` (compileall, pytest, pinned-parser GNN validation).
 
 ## Open / deferred list (not implemented this pass)
 
-1. NHIM deduplication — needs runtime validation with heavy deps.
-2. CTA source consolidation — behavior change, owner decision.
-3. Archive path scrubbing — historical files, flagged instead.
-4. CI / link lint — owner decision.
-5. Dead code noted above (`2_write_intro_letter.py`, `utils.setup_logging`).
-6. Duplicate method definitions in Hipolito/AII data modules — left intact because stage 1 reads the files as raw prompt text.
+1. CTA source consolidation — behavior change, owner decision.
+2. Archive path scrubbing — historical files, flagged instead.
+3. Duplicate method definitions in Hipolito/AII data modules — left intact because stage 1 reads the files as raw prompt text.
+4. Live end-to-end model runs — need a real `LLM_keys.key`; the test suite stubs the client by design.
+5. Training/fitting the sketch's neural components (Hopfield memory, language-model responses) — no data or runtime in the repository.

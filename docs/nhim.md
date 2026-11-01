@@ -1,18 +1,39 @@
 # NHIM module
 
-`NHIM/NHIM_API.py` is a separate experimental module. It imports NumPy, pandas, Matplotlib, spaCy, and Hugging Face Transformers, loads `distilbert-base-cased-distilled-squad`, `en_core_web_sm`, and `gpt2` at module import time, and exposes components for response generation, attention, memory, reinforcement learning, distress dynamics, Bayesian updates, and problem-solving inquiries.
+`NHIM/` holds a problem-solving-agent sketch and the canonical model extracted
+from it.
 
-Its `handle_user_queries()` function provides an interactive terminal loop and runs when the file is executed directly.
+| File | Role |
+|---|---|
+| [`nhim_inquiry_agent.gnn.md`](../NHIM/nhim_inquiry_agent.gnn.md) | GNN specification of the inquiry loop (the repository's only generative model) |
+| [`nhim_model.py`](../NHIM/nhim_model.py) | NumPy implementation of that model: filter, free energies, action selection, distress dynamics |
+| [`NHIM_API.py`](../NHIM/NHIM_API.py) | The sketch: inquiry loop, attention gating, Hopfield memory, optional language-model responses |
+| [`gnn-pin.json`](../NHIM/gnn-pin.json) | Pinned upstream parser revision, parser file hashes |
+| [`requirements.txt`](../NHIM/requirements.txt) | Sketch extras (spaCy, Transformers, torch, pandas, Matplotlib) |
 
-## Important runtime notes
+See [GNN integration](gnn.md) for the specification, the pin, and the
+validator.
 
-- The module has heavyweight dependencies; install them from [NHIM/requirements.txt](../NHIM/requirements.txt).
-- The model and spaCy data downloads are not vendored in this repository.
-- Importing the module loads models immediately, so a working ML environment and model cache are required even for basic imports.
-- There is no test suite or CI workflow for NHIM in this repository.
+## Import and dependency behaviour
 
-## Review status
+- `nhim_model.py` needs NumPy only and has no import-time side effects.
+- `NHIM_API.py` imports NumPy and `nhim_model` eagerly. spaCy, Transformers,
+  and Matplotlib load lazily, inside the code paths that use them, so
+  importing the module and running the deterministic loop works with NumPy
+  alone.
+- The large model and spaCy data downloads (`distilbert-base-cased-distilled-squad`,
+  `en_core_web_sm`, `gpt2`) are still required for the language-model response
+  path; they are not vendored.
+- `handle_user_queries()` remains the interactive terminal loop, and it runs
+  only under `if __name__ == "__main__":`.
+- Every class and function is defined once. The earlier file contained two full
+  copies of each class, with the second shadowing the first; the surviving
+  definition is the one Python actually used, and the duplicated code was
+  removed.
 
-The file currently contains two full definitions of its principal classes. The second definition replaces the first in Python name resolution, but deduplicating the file safely requires runtime validation of the experimental behavior and model dependencies. This is tracked as deferred work in [TO-DO.md](../TO-DO.md), rather than being changed during a documentation-focused pass.
+The deterministic paths are covered by [`tests/test_nhim_api.py`](../tests/test_nhim_api.py)
+and [`tests/test_nhim_model.py`](../tests/test_nhim_model.py). The
+language-model and attention paths that need the heavy downloads are not
+exercised by the test suite, and no result from them is claimed.
 
-NHIM is not part of the four-stage `GEN-24/` pipeline.
+NHIM is not part of the four-stage `GEN-24/` pipeline; the two share no code.

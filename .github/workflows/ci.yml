@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pip -r requirements-dev.txt
+
+      - name: Compile all Python sources
+        run: python -m compileall -q .
+
+      - name: Run the test suite
+        # The pinned-parser test skips when no GNN checkout is present; it runs
+        # for real in the step below once the pinned commit is fetched.
+        run: python -m pytest tests/ -q
+
+      - name: Fetch the pinned GNN checkout
+        id: gnn
+        run: |
+          PIN=$(python -c "import json;print(json.load(open('NHIM/gnn-pin.json'))['commit'])")
+          if git clone --quiet --filter=blob:none --no-checkout \
+              https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation.git "$RUNNER_TEMP/gnn" \
+             && git -C "$RUNNER_TEMP/gnn" checkout --quiet "$PIN"; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::GNN checkout unavailable; pinned-parser validation is skipped in this run"
+          fi
+
+      - name: Validate the GNN specification against the pinned parser
+        if: steps.gnn.outputs.available == 'true'
+        run: python scripts/validate_gnn_spec.py --gnn-root "$RUNNER_TEMP/gnn" --require-gnn

@@ -109,3 +109,47 @@ Commits (oldest to newest):
 - `python -m py_compile` on all edited `.py` files; `import config` without key file; notebook re-serialized and
   re-validated as nbformat 4; relative markdown links checked against the working tree.
 - `git status` clean after push; `git log` on `origin/main` shows pushed commits.
+
+---
+
+## Pass 2 (2026-11-01) — current-API and GNN-alignment pass
+
+Fleet context: the Active Inference Institute's public repositories are being
+aligned so that every repository that defines a generative model specifies and
+implements it in Generalized Notation Notation (GNN). GEN24 does define one —
+the NHIM inquiry loop — so this pass extracted it from the sketch, specified it
+in GNN, and validated it against a pinned upstream parser revision.
+
+Changes:
+
+| Change | Detail |
+| --- | --- |
+| Canonical model | New `NHIM/nhim_model.py`: flat discrete POMDP over the inquiry loop (3 contexts, 3 sense-data outcomes, 3 response actions), NumPy only, no import-time side effects. Replaces the sketch's `numpy.random.rand` placeholders with documented values, adds variational free energy, expected free energy, a softmax policy posterior, action selection, and bounded distress dynamics. |
+| GNN specification | New `NHIM/nhim_inquiry_agent.gnn.md`: required and optional sections, `ActInfOntologyAnnotation`, `ModelParameters`, footer and signature. |
+| Upstream pin | New `NHIM/gnn-pin.json`: GNN `v5.0.3`, commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`, parser entrypoint `gnn.parsers.markdown_parser.MarkdownGNNParser`, and SHA-256 for every parser file the validator depends on. |
+| Validator | New `scripts/validate_gnn_spec.py`: checks the pin, re-hashes the recorded parser files from the pinned commit, extracts `src/gnn` from that commit into a temporary directory, imports the parser from there, parses the spec, checks the 13 declared variables, compares `A`/`B`/`C`/`D` with `NHIM/nhim_model.py` numerically, and checks stochasticity and section presence. `SKIPPED` (exit 0) without a checkout, exit 2 with `--require-gnn`. |
+| Sketch repaired | `NHIM/NHIM_API.py` rewritten: every class was defined twice (second copy shadowing the first); undefined-name bugs (`ensure_same_length`, `ContextualFactors`, `emotional_states`, alpha/beta/... ) removed; `hash()` replaced with `zlib.crc32` for determinism; spaCy/Transformers/Matplotlib imports made lazy; interactive loop moved behind `if __name__ == "__main__":`. |
+| Current model ID | `GEN-24/config.py`: `gpt-4o-mini-2024-07-18` -> `gpt-4o-mini`; unused `read_api_key()` removed. |
+| Dead code removed | `utils.setup_logging()` (legacy `fieldshift2.log` name), `utils.setup_llm()`, `utils.batch_process_llm()`, `utils.extract_entity_files()`, `utils.extract_organization_files()`, and the unused `openai` imports in stages 2-4. The reported "dead" locals in `2_write_intro_letter.py` turned out to feed the existing-output guard, so they stay. |
+| Tests | New `tests/` suite (27 tests): the model's matrices, filter, free energies and distress bounds; the spec's sections, variables and pin record; the pinned-parser validation as a subprocess; the sketch's import safety, deduplication, inquiry loop, attention and memory; the pipeline modules with a stubbed model client. |
+| CI and manifests | New `.github/workflows/ci.yml` (compileall, pytest, fetch the pinned GNN commit and run the validator with `--require-gnn`) and `requirements-dev.txt` (numpy, `openai>=1.0`, pytest, defusedxml). |
+| Signposting | New `AGENTS.md` and `docs/gnn.md`; README, `docs/README.md`, `docs/overview.md` and `docs/pipeline.md` updated; GNN repository, integration guide, implementation guide and related fleet repositories linked. |
+
+Verification performed (real runs, this machine, temp venv on CPython 3.12.15):
+
+- `python -m compileall -q .` — OK.
+- `python -m pytest tests/ -q` — 27 passed (stubbed model client; no key, no network), both with the default
+  temp directory and with `TMPDIR` pointing under macOS `/var` (the pinned-tree import check resolves symlinked
+  paths, so `/var` vs `/private/var` does not matter).
+- `python scripts/validate_gnn_spec.py --require-gnn` — `VALID: spec parses
+  against the pinned parser and matches NHIM/nhim_model.py`; pin commit
+  present, `v5.0.3` tag points at it, all six parser-file hashes match, 13
+  variables with expected dimensions, `A`/`B`/`C`/`D` equal the
+  implementation, stochasticity and sections OK. The parser was imported from
+  the extracted pinned tree, not from the checkout's working tree.
+
+Not performed (stated honestly): no live model calls (no `LLM_keys.key`, no
+provider budget); no training or fitting of the sketch's Hopfield/language-model
+components; the new CI workflow has not executed on GitHub from this branch
+yet; the language-model and attention paths that need spaCy/Transformers
+downloads are not covered by the suite.

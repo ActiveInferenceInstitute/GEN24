@@ -38,4 +38,4 @@ The scripts create output directories as needed. Translation stages can issue ma
 
 - The call-to-action text is embedded in `4_translate_call_to_action.py`; a related source document is also present at `Inputs_and_Outputs/Entity/Shyaka/ReclAIMEd_Call_To_Action.md`. They are not automatically synchronized.
 - `Archive/` contains historical scripts with old absolute paths and should not be treated as runnable pipeline stages.
-- There are no automated tests or CI workflows in this repository. Validate changes with syntax checks and small, credential-free imports before making model requests.
+- The repository has a test suite (`python -m pytest tests/ -q`) and a CI workflow that runs it plus the GNN validator. The suite stubs the model client, so it does not prove that a live model request works.

@@ -5,12 +5,14 @@ This directory is the documentation index for the GEN24 repository.
 - [Project overview](overview.md) — purpose, scope, and current repository contents.
 - [Pipeline guide](pipeline.md) — the four active GEN-24 stages, configuration, outputs, and limitations.
 - [Data layout](data-layout.md) — how source material and generated artifacts are organized.
-- [NHIM notes](nhim.md) — status and runtime considerations for `NHIM/NHIM_API.py`.
+- [NHIM notes](nhim.md) — status and runtime considerations for the NHIM model and `NHIM/NHIM_API.py`.
+- [GNN integration](gnn.md) — the GNN specification of the NHIM inquiry agent, the upstream parser pin, and the validator.
 - [Notebook notes](notebook.md) — what `ARCANGEL1_0_2.ipynb` does and what environment it expects.
 
 Repository-level guidance:
 
 - [README](../README.md)
+- [Agent notes](../AGENTS.md)
 - [Contributing](../CONTRIBUTING.md)
 - [Security](../SECURITY.md)
 - [Citation](../CITATION.cff)
