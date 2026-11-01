@@ -12,6 +12,7 @@ This repository is a working/exploring project rather than a packaged library. T
 - [Input/output layout](GEN-24/Inputs_and_Outputs/README.md)
 - [Notebook notes](docs/notebook.md)
 - [NHIM notes](docs/nhim.md)
+- [GNN integration](docs/gnn.md)
 - [Contributing](CONTRIBUTING.md)
 - [Security](SECURITY.md)
 - [Citation](CITATION.cff)
@@ -28,7 +29,13 @@ GEN-24/
 ├── utils.py                      File, API-client, and LLM helpers
 ├── Inputs_and_Outputs/            Source material and generated Markdown artifacts
 └── Archive/                      Historical scripts, not the active pipeline
-NHIM/NHIM_API.py                  Experimental cognitive/ML module
+NHIM/
+├── nhim_inquiry_agent.gnn.md     GNN specification of the inquiry model
+├── nhim_model.py                 NumPy implementation of that model
+├── NHIM_API.py                   Experimental cognitive/ML module
+└── gnn-pin.json                  Pinned upstream GNN parser revision
+scripts/validate_gnn_spec.py      Validate the spec against the pinned parser
+tests/                            Test suite (no API key or network required)
 ARCANGEL1_0_2.ipynb               Google Colab notebook
 ```
 
@@ -40,7 +47,32 @@ The GEN-24 pipeline uses Python and the `openai` package. Install its minimal de
 python -m pip install -r GEN-24/requirements.txt
 ```
 
-The NHIM module has a separate, substantially heavier dependency set; see [docs/nhim.md](docs/nhim.md) and [NHIM/requirements.txt](NHIM/requirements.txt).
+The NHIM module has a separate, substantially heavier dependency set for its language-model and attention paths; see [docs/nhim.md](docs/nhim.md) and [NHIM/requirements.txt](NHIM/requirements.txt). Its canonical model, `NHIM/nhim_model.py`, needs NumPy only.
+
+For the test suite and the GNN validator, install the repository-level development manifest:
+
+```bash
+python -m pip install -r requirements-dev.txt
+```
+
+## Generative model and GNN
+
+The repository's only generative model is the **NHIM inquiry agent**, specified in Generalized Notation Notation and implemented once in NumPy:
+
+- Specification: `NHIM/nhim_inquiry_agent.gnn.md`
+- Implementation: `NHIM/nhim_model.py`
+- Validator: `python scripts/validate_gnn_spec.py` (add `--require-gnn` to fail instead of skipping when no GNN checkout is present)
+
+The specification is validated against the pinned upstream parser revision recorded in `NHIM/gnn-pin.json` (GNN `v5.0.3`, commit `8f293d9b`). The `GEN-24/` pipeline defines no generative model, so it carries no specification. See [GNN integration](docs/gnn.md) for the model, the pin, and the re-pin procedure.
+
+## Tests and CI
+
+```bash
+python -m compileall -q .
+python -m pytest tests/ -q
+```
+
+The suite covers the inquiry model, its GNN specification and pin record, the NHIM sketch's deterministic paths, and the pipeline modules with a stubbed model client. It needs no API key and no network. The parser-level GNN test runs only when a GNN checkout is present, and CI fetches the pinned commit to run it with `--require-gnn`.
 
 ## API key setup
 

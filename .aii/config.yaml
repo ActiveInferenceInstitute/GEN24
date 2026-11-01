@@ -1,6 +1,6 @@
 # AII sidecar — InstituteOS metadata. Schema: instituteos.platform.aii_sidecar
 meta:
-  updated: '2026-06-30'
+  updated: '2026-11-01'
 repo:
   name: GEN24
   slug: gen24
@@ -16,6 +16,8 @@ ecosystem:
     note: Federated via the InstituteOS .aii manifest.
   - repo: ActiveInferenceInstitute/Active_Inference_Ontology
     note: Uses Active Inference Ontology terms.
+  - repo: ActiveInferenceInstitute/Generalized_Notation_Notation
+    note: The NHIM inquiry model is specified in GNN (NHIM/nhim_inquiry_agent.gnn.md) and validated against a pinned parser revision recorded in NHIM/gnn-pin.json.
   links:
     github: https://github.com/ActiveInferenceInstitute/GEN24
     website: https://www.activeinference.org
@@ -26,6 +28,9 @@ artifacts:
 - path: LICENSE
   kind: doc
   description: License.
+- path: NHIM/nhim_inquiry_agent.gnn.md
+  kind: doc
+  description: GNN specification of the NHIM inquiry model.
 provenance:
   license: MIT
   citation:

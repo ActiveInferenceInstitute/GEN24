@@ -7,7 +7,7 @@ GEN24 is an exploratory project that combines source material about entities, or
 The repository also includes two separate experimental artifacts:
 
 - `ARCANGEL1_0_2.ipynb`, a Google Colab notebook for an ARC-style cognitive/problem-solving experiment.
-- `NHIM/NHIM_API.py`, a large experimental Python module containing attention, memory, reinforcement-learning, distress-dynamics, Bayesian-update, and inquiry-processing components.
+- The NHIM module: `NHIM/nhim_inquiry_agent.gnn.md` specifies its inquiry loop in Generalized Notation Notation, `NHIM/nhim_model.py` implements that model in NumPy, and `NHIM/NHIM_API.py` is the original sketch with attention, memory, reinforcement-learning, distress-dynamics, Bayesian-update, and inquiry-processing components.
 
 These artifacts are related by their exploratory cognitive/AI theme but are not invoked by the four-stage GEN-24 pipeline.
 
@@ -27,6 +27,6 @@ Counts describe the checked-in tree at the time of this review; generated artifa
 
 ## Status and boundaries
 
-This is not a packaged Python application: there is no `pyproject.toml`, test suite, command-line interface, or CI configuration. The scripts are file-oriented and use paths relative to their own directory in the active stages. They should be treated as exploratory automation, not as a stable API.
+This is not a packaged Python application: there is no `pyproject.toml` and no command-line interface. The scripts are file-oriented and use paths relative to their own directory in the active stages. They should be treated as exploratory automation, not as a stable API. The repository does have a test suite (`tests/`) and a CI workflow; the NHIM inquiry model additionally has a GNN specification pinned to an upstream parser revision.
 
-The active LLM stages require a local `LLM_keys.key` file and a configured OpenAI-compatible model. Do not place credentials in tracked files. For details, see [the pipeline guide](pipeline.md).
+The active LLM stages require a local `LLM_keys.key` file and a configured OpenAI-compatible model. Do not place credentials in tracked files. For details, see [the pipeline guide](pipeline.md) and [GNN integration](gnn.md).
