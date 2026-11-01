@@ -1,33 +1,10 @@
 import os
-from typing import Dict, Any
-
-def read_api_key(file_path: str) -> str:
-    """
-    Reads the API key from the specified file.
-
-    Args:
-        file_path (str): Path to the file containing the API key.
-
-    Returns:
-        str: The API key.
-
-    Raises:
-        ValueError: If the API key is not found in the file.
-        FileNotFoundError: If the file does not exist.
-    """
-    try:
-        with open(file_path, 'r') as file:
-            for line in file:
-                if line.startswith("OPENAI_API_KEY"):
-                    return line.split('=')[1].strip()
-        raise ValueError("API key not found in the specified file")
-    except FileNotFoundError:
-        raise FileNotFoundError(f"The file {file_path} does not exist")
+from typing import Dict
 
 # Get the directory of the current script
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Path to the LLM_keys.key file
+# Path to the LLM_keys.key file (read lazily by utils.get_api_key()).
 API_KEY_FILE = os.path.join(SCRIPT_DIR, 'LLM_keys.key')
 
 # Ensure output directories exist
@@ -48,7 +25,7 @@ USER_CONFIG = {
         'Written_Introduction_Letter': os.path.join(SCRIPT_DIR, 'Inputs_and_Outputs', 'Written_Introduction_Letter')
     },
     'llm_params': {
-        'model': 'gpt-4o-mini-2024-07-18',
+        'model': 'gpt-4o-mini',
         'max_tokens': 4096,
         'temperature': 0.5,
         'top_p': 1.0,
