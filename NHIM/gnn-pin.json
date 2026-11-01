@@ -1,0 +1,26 @@
+{
+  "repository": "ActiveInferenceInstitute/Generalized_Notation_Notation",
+  "release": "v5.0.3",
+  "commit": "8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1",
+  "commit_subject": "Merge pull request #292 from ActiveInferenceInstitute/codex/gnn-5-0-3-release-20261031",
+  "commit_date": "2026-10-31",
+  "recorded": "2026-11-01",
+  "recorded_by": "GEN24 GNN alignment pass",
+  "parser_entrypoint": "gnn.parsers.markdown_parser.MarkdownGNNParser",
+  "spec": "NHIM/nhim_inquiry_agent.gnn.md",
+  "implementation": "NHIM/nhim_model.py",
+  "validator": "scripts/validate_gnn_spec.py",
+  "parser_files": {
+    "src/gnn/parsers/markdown_parser.py": "24a30ea7e67d597e891fe16e521e13be5f2013af90eeb282cfe257940b281e82",
+    "src/gnn/parsers/markdown_parser_parameter.py": "2e94e88c79b8998387f2a1c53fe88dcc45adc498c47c30f7ec3bd577a8072061",
+    "src/gnn/parsers/common.py": "c27da82a05058ec2f96b4c675374a848e64535122bf3a63155a47b8b23e3076e",
+    "src/gnn/parsers/converters.py": "e1ef9366ee5f3014fed75867f1b02c4f141b8496819b3bb47d6eaa5915fed9c0",
+    "src/gnn/schema/parser.py": "4913fdd970ea046917bd1f02460bf3b3c3cbe42cca47651e9a8b95cd064506f4",
+    "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c"
+  },
+  "notes": [
+    "Pin read from the pinned commit with 'git -C <gnn> show <commit>:<path>', never from a live working tree.",
+    "The upstream parser is only needed for validation; GEN24 does not import GNN at runtime.",
+    "Re-pin procedure: update commit/release here, refresh every parser_files hash from the new commit, run scripts/validate_gnn_spec.py --require-gnn."
+  ]
+}
