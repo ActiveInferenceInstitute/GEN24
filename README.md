@@ -65,6 +65,8 @@ The repository's only generative model is the **NHIM inquiry agent**, specified 
 
 The specification is validated against the pinned upstream parser revision recorded in `NHIM/gnn-pin.json` (GNN `v5.0.3`, commit `8f293d9b`). The `GEN-24/` pipeline defines no generative model, so it carries no specification. See [GNN integration](docs/gnn.md) for the model, the pin, and the re-pin procedure.
 
+GNN maintains a [downstream adoption guide](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/blob/main/docs/gnn/integration/downstream_adoption.md) for repositories that consume the notation.
+
 ## Tests and CI
 
 ```bash
