@@ -3,7 +3,7 @@
 # Runtime dependencies of the letter pipeline live in each component's README;
 # this file pins what the tests and the GNN validator need here.
 numpy
-openai>=1.0
+openai>=3.41.0
 pytest
 # The pinned GNN parser (NHIM/gnn-pin.json) imports defusedxml for its schema parser.
 defusedxml
