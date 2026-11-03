@@ -22,23 +22,38 @@ jobs:
         run: python -m compileall -q .
 
       - name: Run the test suite
-        # The pinned-parser test skips when no GNN checkout is present; it runs
-        # for real in the step below once the pinned commit is fetched.
+        # The parser-level GNN test skips here; the named conformance job below
+        # provisions the pinned checkout and runs it with GNN_ROOT set.
         run: python -m pytest tests/ -q
 
+  gnn-conformance:
+    name: gnn conformance (pinned v5.0.3)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pip -r requirements-dev.txt
+
       - name: Fetch the pinned GNN checkout
-        id: gnn
         run: |
-          PIN=$(python -c "import json;print(json.load(open('NHIM/gnn-pin.json'))['commit'])")
-          if git clone --quiet --filter=blob:none --no-checkout \
-              https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation.git "$RUNNER_TEMP/gnn" \
-             && git -C "$RUNNER_TEMP/gnn" checkout --quiet "$PIN"; then
-            echo "available=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::GNN checkout unavailable; pinned-parser validation is skipped in this run"
-          fi
+          set -euo pipefail
+          PIN=NHIM/gnn-pin.json
+          REPO=$(python -c "import json;print(json.load(open('$PIN'))['repository'])")
+          TAG=$(python -c "import json;print(json.load(open('$PIN'))['release'])")
+          COMMIT=$(python -c "import json;print(json.load(open('$PIN'))['commit'])")
+          git clone --quiet --filter=blob:none --no-checkout "https://github.com/${REPO}.git" "$RUNNER_TEMP/gnn"
+          git -C "$RUNNER_TEMP/gnn" checkout --quiet "$COMMIT"
+          # The validator also checks the release tag; require it to peel to the pin.
+          test "$(git -C "$RUNNER_TEMP/gnn" rev-parse "${TAG}^{commit}")" = "$COMMIT"
 
       - name: Validate the GNN specification against the pinned parser
-        if: steps.gnn.outputs.available == 'true'
         run: python scripts/validate_gnn_spec.py --gnn-root "$RUNNER_TEMP/gnn" --require-gnn
+
+      - name: Run the GNN conformance tests
+        env:
+          GNN_ROOT: ${{ runner.temp }}/gnn
+        run: python -m pytest -q tests/test_gnn_spec.py
