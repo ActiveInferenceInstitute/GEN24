@@ -1,7 +1,7 @@
 # `Pro-Introduction_Letter/` — stage-1 assembled prompt
 
 Holds the assembled pro-introduction prompt produced by
-`../1_generate_pro-intro.py` from the domain, entity and organization source
+`../../1_generate_pro-intro.py` from the domain, entity and organization source
 material. The current file is
 `introduction_letter_Hipolito_and_Friston.md`.
 
