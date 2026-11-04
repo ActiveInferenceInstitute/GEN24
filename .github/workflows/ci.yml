@@ -27,7 +27,7 @@ jobs:
         run: python -m pytest tests/ -q
 
   gnn-conformance:
-    name: gnn conformance (pinned v5.0.3)
+    name: gnn conformance (pinned)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -57,3 +57,10 @@ jobs:
         env:
           GNN_ROOT: ${{ runner.temp }}/gnn
         run: python -m pytest -q tests/test_gnn_spec.py
+
+      - name: Report the resolved GNN version
+        run: |
+          PIN=NHIM/gnn-pin.json
+          VERSION=$(python3 -c "import json;print(json.load(open('$PIN'))['release'].removeprefix('v'))")
+          test -n "$VERSION"
+          echo "gnn-version=${VERSION}" >> "$GITHUB_STEP_SUMMARY"
