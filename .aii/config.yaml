@@ -1,7 +1,7 @@
 # AII sidecar — InstituteOS metadata. Schema: aii_platform.aii_sidecar
 meta:
   sidecar_version: 1.2.1
-  updated: '2026-11-10'
+  updated: '2026-11-11'
 repo:
   name: GEN24
   slug: gen24
@@ -11,6 +11,7 @@ repo:
     to action with OpenAI-compatible models, plus the NHIM cognitive/ML module.
 institute:
   category: research-software
+  maturity: wip
   steward: Active Inference Institute
 ecosystem:
   relations:

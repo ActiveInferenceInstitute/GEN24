@@ -1,6 +1,6 @@
 # TO-DO — GEN24 documentation pass
 
-Last reviewed: 2026-11-01 (current-API and GNN-alignment pass, see REVIEW_LOG_2026-08-02.md)
+Last reviewed: 2026-11-11 (sidecar and test-count accuracy pass) after 2026-11-01
 
 Severity definitions:
 - **Minor** — typo, broken link, formatting, small doc/code drift fix.
@@ -16,7 +16,7 @@ Legend: `[ ]` open · `[x]` completed (✓ with commit) · `[~]` deferred (reaso
 - [x] ✓ Pinned the upstream parser revision and its file hashes in `NHIM/gnn-pin.json` (GNN `v5.0.3`, commit `8f293d9b`).
 - [x] ✓ Added `scripts/validate_gnn_spec.py`, which validates the spec against the pinned parser (never a live tree) and compares `A`/`B`/`C`/`D` with the implementation.
 - [x] ✓ Deduplicated `NHIM/NHIM_API.py` (every class was defined twice), removed undefined-name bugs, made heavy imports lazy, and put the interactive loop behind `if __name__ == "__main__":`.
-- [x] ✓ Added a test suite (`tests/`, 32 tests) covering the model, the spec and pin record, the NHIM sketch's deterministic paths, and the pipeline modules with a stubbed client.
+- [x] ✓ Added a test suite (`tests/`, 27 tests) covering the model, the spec and pin record, the NHIM sketch's deterministic paths, and the pipeline modules with a stubbed client.
 - [x] ✓ Added `requirements-dev.txt` and a CI workflow (`.github/workflows/ci.yml`) that runs compileall, pytest, and the pinned-parser validation.
 - [x] ✓ Made the model name current: `gpt-4o-mini` instead of the dated snapshot `gpt-4o-mini-2024-07-18`.
 - [x] ✓ Removed unused helpers: `config.read_api_key()`, `utils.setup_logging()`, `utils.setup_llm()`, `utils.batch_process_llm()`, `utils.extract_entity_files()`, `utils.extract_organization_files()`, and the unused `openai` imports in stages 2-4.
@@ -55,7 +55,7 @@ Still not done in this pass: live model calls (no key, no personal archives) and
 
 - [x] ✓ Establish a documentation system where none existed: `docs/README.md` index + overview + pipeline + data-layout + NHIM + notebook pages, cross-linked with the README and folder READMEs. (commit: 4a63fd8)
 - [x] ✓ Deduplicate `NHIM/NHIM_API.py` (every class defined twice, ~lines 30-570 vs ~677-1160). Completed 2026-11-01 without the heavy runtime: the surviving definitions are the ones Python actually resolved, the deterministic paths are covered by `tests/test_nhim_api.py`, and the language-model paths stay untouched. See `docs/nhim.md`.
-- [x] ✓ Add CI and a test suite. Completed 2026-11-01: `tests/` (32 tests, no key/network), `requirements-dev.txt`, `.github/workflows/ci.yml` (compileall, pytest, pinned-parser GNN validation).
+- [x] ✓ Add CI and a test suite. Completed 2026-11-01: `tests/` (27 tests, no key/network), `requirements-dev.txt`, `.github/workflows/ci.yml` (compileall, pytest, pinned-parser GNN validation).
 
 ## Open / deferred list (not implemented this pass)
 
