@@ -336,8 +336,14 @@ class ProblemSolvingIntelligence:
         return f"Action: {nhim_model.ACTION_LABELS[action]}, Beliefs: {beliefs}"
 
 
-def validate_model(psi, inquiries):
-    """Process a list of inquiries and plot beliefs, distress, and timing."""
+def validate_model(psi, inquiries, *, plot=False):
+    """Process a list of inquiries and return one result record per inquiry.
+
+    ``plot=True`` additionally draws the beliefs, distress, and timing figures.
+    The default is deliberately headless: the deterministic path must run with
+    NumPy alone, and ``plt.show()`` blocks in a GUI event loop, so a library call
+    never opens a window.
+    """
     results = []
     times = []
     belief_history = []
@@ -364,6 +370,9 @@ def validate_model(psi, inquiries):
                 "elapsed_seconds": elapsed,
             }
         )
+
+    if not plot:
+        return results
 
     try:
         import matplotlib.pyplot as plt

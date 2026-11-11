@@ -1,11 +1,14 @@
-# AII sidecar — InstituteOS metadata. Schema: instituteos.platform.aii_sidecar
+# AII sidecar — InstituteOS metadata. Schema: aii_platform.aii_sidecar
 meta:
-  updated: '2026-11-01'
+  sidecar_version: 1.2.1
+  updated: '2026-11-10'
 repo:
   name: GEN24
   slug: gen24
   full_name: ActiveInferenceInstitute/GEN24
-  description: Working/Exploring branch for GEN-24 project https://coda.io/d/Active-Blockference_dIvNESFmyj6/GEN-24_su2DYdSx#_luRI0xVN
+  description: Exploratory Active Inference Institute pipeline for generating and
+    translating synthetic domain introduction letters and audience-specific calls
+    to action with OpenAI-compatible models, plus the NHIM cognitive/ML module.
 institute:
   category: research-software
   steward: Active Inference Institute
@@ -17,7 +20,8 @@ ecosystem:
   - repo: ActiveInferenceInstitute/Active_Inference_Ontology
     note: Uses Active Inference Ontology terms.
   - repo: ActiveInferenceInstitute/Generalized_Notation_Notation
-    note: The NHIM inquiry model is specified in GNN (NHIM/nhim_inquiry_agent.gnn.md) and validated against a pinned parser revision recorded in NHIM/gnn-pin.json.
+    note: The NHIM inquiry model is specified in GNN (NHIM/nhim_inquiry_agent.gnn.md)
+      and validated against a pinned parser revision recorded in NHIM/gnn-pin.json.
   links:
     github: https://github.com/ActiveInferenceInstitute/GEN24
     website: https://www.activeinference.org
@@ -31,6 +35,18 @@ artifacts:
 - path: NHIM/nhim_inquiry_agent.gnn.md
   kind: doc
   description: GNN specification of the NHIM inquiry model.
+- path: AGENTS.md
+  kind: doc
+  description: Agent guidance.
+- path: CITATION.cff
+  kind: citation
+  description: Machine-readable citation metadata.
+- path: tests
+  kind: test
+  description: Test suite.
+- path: docs
+  kind: doc
+  description: Documentation tree.
 provenance:
   license: MIT
   citation:
@@ -38,14 +54,24 @@ provenance:
 instituteos:
   tags:
   - gen24
-  - working
-  - exploring
-  - branch
-  - gen
-  - jupyter notebook
+  - letters
+  - translation
+  - openai
+  - nhim
 capabilities:
 - notebooks
+- tested
+- documentation
+- ci
+- citation
 tasks:
   inventory:
     cmd: git ls-files
     description: List tracked files.
+docs:
+- README.md
+- AGENTS.md
+- docs/INTEGRATION.md
+- docs/README.md
+- docs/AGENTS.md
+schema: aii-sidecar/v1
