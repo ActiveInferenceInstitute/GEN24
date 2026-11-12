@@ -7,7 +7,8 @@
   declared variables. Offline: it does not need a GNN checkout.
 - `conftest.py` — shared paths and fixtures.
 
-Run: `./run.sh test` (or `python -m pytest tests/ -q`). `pytest.ini` pins the
+Run: `./run.sh test-fast`, or `./run.sh test-full` to add the GNN conformance
+run (or `python -m pytest tests/ -q` directly). `pytest.ini` pins the
 rootdir and `testpaths` so the collected node IDs do not depend on a parent
 directory's configuration. The suite stubs the model client, so it needs no API
 key and no network; it does not prove a live request works.

@@ -16,8 +16,8 @@ The active scripts are numbered `GEN-24/1_generate_pro-intro.py` through `GEN-24
 For Python changes, run the gate arms that cover them:
 
 ```bash
-./run.sh lint test        # compile every source, run the offline suite
-./run.sh lint test docs   # plus Markdown links and the generated facts
+./run.sh                  # `fast`: lint, test-fast, docs (the default)
+./run.sh test-full        # test-fast plus the GNN conformance run
 ./run.sh gnn              # only if you touched the GNN spec, model, or pin
 ```
 

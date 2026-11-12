@@ -6,8 +6,11 @@ commands:
 
 | Job key | Display name | Arms |
 |---|---|---|
-| `tests` | `tests` | `./run.sh lint`, `./run.sh test`, `./run.sh docs` |
+| `tests` | `tests` | `./run.sh fast` (lint, test-fast, docs) |
 | `gnn-conformance` | `gnn conformance (pinned)` | `./run.sh gnn` |
+
+Together the two jobs run every primitive arm once, which is what
+`./run.sh all` does locally.
 
 The `tests` job needs no API key and no network. The `gnn-conformance` job
 clones the parser commit pinned in [`../NHIM/gnn-pin.json`](../NHIM/gnn-pin.json)

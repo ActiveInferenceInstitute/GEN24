@@ -76,9 +76,10 @@ GNN maintains a [downstream adoption guide](https://github.com/ActiveInferenceIn
 `./run.sh` is the only gate entry point. It defines one command per arm, and CI runs those arms verbatim, so a local run and the workflow cannot drift apart.
 
 ```bash
-./run.sh                  # all arms: lint, test, docs, gnn
-./run.sh lint test docs   # the offline gate
-./run.sh gnn              # GNN conformance; needs a GNN checkout
+./run.sh                  # `fast`: lint, test-fast, docs (the default)
+./run.sh test-full        # test-fast plus GNN conformance
+./run.sh all              # every primitive arm once; needs a GNN checkout
+./run.sh lint test-fast   # any subset, in the order given
 ```
 
 The suite covers the inquiry model, its GNN specification and pin record, the NHIM sketch's deterministic paths, and the pipeline modules with a stubbed model client. It needs no API key and no network. The parser-level GNN conformance check is the `gnn` arm, not a pytest test: it runs `scripts/validate_gnn_spec.py --require-gnn --require-tag` against the checkout pinned in `NHIM/gnn-pin.json`, exactly once per gate.
