@@ -56,15 +56,26 @@ repository, never against a live working tree:
 - Recorded SHA-256 for every parser file the validator depends on
   (`src/gnn/parsers/*`, `src/gnn/schema/parser.py`, `docs/gnn/gnn_syntax.md`)
 
-[`NHIM/gnn-pin.json`](../NHIM/gnn-pin.json) is the record; treat it as the
-contract between this repository and the upstream parser.
+[`NHIM/gnn-pin.json`](../NHIM/gnn-pin.json) is the record — schema
+`gnn-importer-pin/v1`, with `repository`, `release`, `commit`, `recorded`,
+`parser_entrypoint`, `spec`, `implementation`, `validator` and `parser_files`.
+Treat it as the contract between this repository and the upstream parser.
+
+The CI side of that contract is recorded in
+[`../.github/GNN.md`](../.github/GNN.md): the `gnn-conformance` job key, its
+`gnn conformance (pinned)` display name, and what the job parses.
 
 ## Run the validator
 
 ```bash
-pip install -r requirements-dev.txt          # the upstream parser needs defusedxml
-python scripts/validate_gnn_spec.py          # --gnn-root PATH, or $GNN_ROOT
+./run.sh gnn                                 # the gate arm; needs a GNN checkout
+python scripts/validate_gnn_spec.py          # one-off; --gnn-root PATH, or $GNN_ROOT
 ```
+
+Install the dev manifest first (`pip install -r requirements-dev.txt`); the
+upstream parser needs `defusedxml`. The `gnn` arm runs the validator with
+`--require-gnn --require-tag`, so a missing checkout or a missing release tag
+fails instead of being reported as unchecked.
 
 The checkout is resolved from `--gnn-root`, then `$GNN_ROOT`, then the sibling
 directory `../Generalized_Notation_Notation`. The validator:
@@ -82,9 +93,15 @@ directory `../Generalized_Notation_Notation`. The validator:
 Exit codes: `0` on success, `1` on a failed check, `2` when the checkout is
 absent and `--require-gnn` was passed. Without `--require-gnn` an absent
 checkout prints `SKIPPED` and exits `0`, so the script is safe in environments
-that cannot fetch the upstream repository. CI fetches the pinned commit and
-runs the validator with `--require-gnn`; the `pytest` run treats the
-parser-level test as skipped when no checkout is available.
+that cannot fetch the upstream repository. Without `--require-tag` a missing
+release tag prints `not present locally (not checked)` and passes; the gate arm
+passes both flags.
+
+The `gnn` arm is the only thing that runs the validator. The parser-level check
+is not wrapped in a pytest test, so a gate runs it once rather than twice;
+[`../tests/test_gnn_spec.py`](../tests/test_gnn_spec.py) keeps the offline
+pin-record and spec-structure checks. CI fetches the pinned commit and runs
+`./run.sh gnn`.
 
 ## Change the model
 

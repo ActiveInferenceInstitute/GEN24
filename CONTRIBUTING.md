@@ -13,11 +13,15 @@ Thank you for contributing to this exploratory Active Inference Institute reposi
 
 The active scripts are numbered `GEN-24/1_generate_pro-intro.py` through `GEN-24/4_translate_call_to_action.py`. They use paths relative to the script directory and write under `GEN-24/Inputs_and_Outputs/`.
 
-For Python changes:
+For Python changes, run the gate arms that cover them:
 
 ```bash
-python -m py_compile GEN-24/*.py
+./run.sh lint test        # compile every source, run the offline suite
+./run.sh lint test docs   # plus Markdown links and the generated facts
+./run.sh gnn              # only if you touched the GNN spec, model, or pin
 ```
+
+See the [gate and CI run guide](docs/RUN_GUIDE.md).
 
 If a change affects an LLM stage, do not make a provider request merely for syntax validation. Use a local `GEN-24/LLM_keys.key` only when intentionally exercising the stage, and never commit it.
 

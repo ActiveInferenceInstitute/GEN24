@@ -35,7 +35,11 @@ NHIM/
 ├── NHIM_API.py                   Experimental cognitive/ML module
 └── gnn-pin.json                  Pinned upstream GNN parser revision
 scripts/validate_gnn_spec.py      Validate the spec against the pinned parser
+scripts/check_docs_links.py       Check relative Markdown links and the docs index
+scripts/gate_metrics.py           Generate docs/_generated/GATE_METRICS.md
 tests/                            Test suite (no API key or network required)
+run.sh                            Gate entry point: lint, test, docs, gnn arms
+pytest.ini                        Pinned pytest rootdir and test paths
 ARCANGEL1_0_2.ipynb               Google Colab notebook
 ```
 
@@ -69,12 +73,17 @@ GNN maintains a [downstream adoption guide](https://github.com/ActiveInferenceIn
 
 ## Tests and CI
 
+`./run.sh` is the only gate entry point. It defines one command per arm, and CI runs those arms verbatim, so a local run and the workflow cannot drift apart.
+
 ```bash
-python -m compileall -q .
-python -m pytest tests/ -q
+./run.sh                  # all arms: lint, test, docs, gnn
+./run.sh lint test docs   # the offline gate
+./run.sh gnn              # GNN conformance; needs a GNN checkout
 ```
 
-The suite covers the inquiry model, its GNN specification and pin record, the NHIM sketch's deterministic paths, and the pipeline modules with a stubbed model client. It needs no API key and no network. The parser-level GNN test runs only when a GNN checkout is present, and CI fetches the pinned commit to run it with `--require-gnn`.
+The suite covers the inquiry model, its GNN specification and pin record, the NHIM sketch's deterministic paths, and the pipeline modules with a stubbed model client. It needs no API key and no network. The parser-level GNN conformance check is the `gnn` arm, not a pytest test: it runs `scripts/validate_gnn_spec.py --require-gnn --require-tag` against the checkout pinned in `NHIM/gnn-pin.json`, exactly once per gate.
+
+GitHub Actions is billing-locked for this organization, so a green local `./run.sh` is the gate that actually executes. See the [gate and CI run guide](docs/RUN_GUIDE.md) for the arms, the environment, the CI job mapping, and the measured cost of each arm.
 
 ## API key setup
 

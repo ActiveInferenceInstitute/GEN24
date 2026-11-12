@@ -32,16 +32,21 @@ and [docs/gnn.md](docs/gnn.md).
 
 ```bash
 pip install -r requirements-dev.txt
-python -m compileall -q .
-python -m pytest tests/ -q
-python scripts/validate_gnn_spec.py --require-gnn   # needs a GNN checkout
+./run.sh lint test docs   # offline: compile, suite, links + generated facts
+./run.sh gnn              # needs a GNN checkout
 ```
+
+`./run.sh` is the single gate entry point and CI runs the same arms; see
+[docs/RUN_GUIDE.md](docs/RUN_GUIDE.md). There is no `types` arm because the
+repository has no type checker. Do not add a command to the workflow that is
+not an arm.
 
 The test suite stubs the model client: it needs no API key and no network, and
 it does not prove that a live model request works. The GNN validator resolves
 the checkout from `--gnn-root`, `$GNN_ROOT`, or the sibling directory
-`../Generalized_Notation_Notation`; without a checkout it prints `SKIPPED`
-unless `--require-gnn` is passed.
+`../Generalized_Notation_Notation`; the `gnn` arm passes `--require-gnn` and
+`--require-tag`, so an absent checkout or release tag fails instead of
+skipping.
 
 ## Boundaries
 
