@@ -1,6 +1,7 @@
 # TO-DO — GEN24 documentation pass
 
-Last reviewed: 2026-11-11 (sidecar and test-count accuracy pass) after 2026-11-01
+Last reviewed: 2026-11-12 (GNN pin, gate-inventory and Education-blocker accuracy
+pass) after 2026-11-01
 
 Severity definitions:
 - **Minor** — typo, broken link, formatting, small doc/code drift fix.
@@ -71,7 +72,9 @@ Still not done in this pass: live model calls (no key, no personal archives) and
   uv cache, and the GNN validator runs once instead of twice.
 - [x] ✓ Removed the `test_validator_passes_against_the_pinned_parser` pytest
   wrapper. It shelled out to the same validator command the `gnn` arm runs, so a
-  gate executed the validator twice. The suite is now 26 tests and fully offline.
+  gate executed the validator twice. The suite was 26 tests and fully offline at
+  that point; `#17` then added four checkout-resolution tests, so the current
+  count is 30 (`docs/_generated/GATE_METRICS.md`, re-checked by the `docs` arm).
 - [x] ✓ Added `--require-tag` to `scripts/validate_gnn_spec.py` so the local arm
   enforces the release-tag check that previously existed only as a CI shell
   step; the workflow no longer carries a second copy of it.
@@ -85,6 +88,17 @@ Still not done in this pass: live model calls (no key, no personal archives) and
   folder guides and the root README/AGENTS/CONTRIBUTING gate instructions.
 - [x] ✓ Measured every arm before and after on this host; the numbers are
   recorded in `docs/RUN_GUIDE.md` and refreshed by `scripts/gate_metrics.py`.
+- [x] ✓ Fixed GNN checkout precedence in `scripts/validate_gnn_spec.py`: an
+  explicit `--gnn-root` wins, then `GNN_ROOT`, then the sibling
+  `Generalized_Notation_Notation` checkout. The environment variable used to be
+  inserted ahead of the explicit argument, so `GNN_ROOT` silently overrode it.
+  The offline pin test now asserts the pin `schema` and `release`, and four
+  parametrized tests cover the resolution order — the suite went from 26 to 30
+  tests. The pin's re-pin note points at `./run.sh gnn` instead of a bare
+  validator call. Merged as `#17` (`e87025e`).
+- [x] ✓ Re-read the gate against the tree on 2026-11-12: `./run.sh docs` reports
+  `OK: 625 Markdown files, relative links resolve, docs index complete` and
+  `OK: gate metrics current (30 tests, 4 primitive arms, 3 compositions)`.
 
 ## Open / deferred list (not implemented this pass)
 
@@ -93,3 +107,39 @@ Still not done in this pass: live model calls (no key, no personal archives) and
 3. Duplicate method definitions in Hipolito/AII data modules — left intact because stage 1 reads the files as raw prompt text.
 4. Live end-to-end model runs — need a real `LLM_keys.key`; the test suite stubs the client by design.
 5. Training/fitting the sketch's neural components (Hopfield memory, language-model responses) — no data or runtime in the repository.
+6. Education bundle `specs/education/gen24.json` — **blocked on authored
+   learning objectives that do not exist in this repository.** The contract row
+   (https://github.com/ActiveInferenceInstitute/courses/blob/main/docs/workflows/education.md,
+   line 189) requires one unit for `GEN-24/` and one for `NHIM/`; the schema
+   (`specs/education/schema.json`, `$defs.unit.objectives`) requires
+   `minItems: 1`, and `specs/education/contract.json` names GEN24 with the
+   adoption pointer `education-contract.json`. Neither that pointer nor any
+   `specs/` directory exists here, so no bundle can be emitted and the
+   membership stays unadopted. A search of every tracked Markdown file for an
+   objectives/outcomes/goals heading returns nothing, and `GEN-24/README.md`,
+   `docs/pipeline.md`, `docs/nhim.md`, `NHIM/README.md` and `docs/overview.md`
+   describe implementation and operation only. The missing artefacts are
+   authored learning objectives for the `GEN-24/` pipeline unit (in
+   `GEN-24/README.md` or `docs/pipeline.md`) and for the `NHIM/` inquiry-model
+   unit (in `NHIM/README.md` or `docs/nhim.md`). Unblocked by: the GEN24
+   maintainer who authors those guides. Implementation descriptions must not be
+   relabelled as objectives to satisfy the schema.
+7. PR https://github.com/ActiveInferenceInstitute/GEN24/pull/16 (`workflows/migration`) —
+   holds the finished pin-spelling normalization (`revision`/`tag`, matching
+   `education.md:149`) plus the blocked-migration record, and is deliberately
+   unmerged. It now conflicts with `main` on `NHIM/gnn-pin.json`, because `#17`
+   rewrote the pin's re-pin note; `git merge-tree --write-tree origin/main
+   workflows/migration` reports the content conflict. Unblocked by: whoever
+   resumes the migration — rebase it, or split the pin change into its own PR.
+8. Re-pin from GNN `v5.0.3` (`8f293d9b`) to `v5.1.0`
+   (`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, the tag present in the upstream
+   checkout), which the rest of the importer fleet already carries. Nothing
+   external blocks it: the recorded procedure is to update `commit`/`release`
+   and every `parser_files` hash from the new commit, then run `./run.sh gnn`
+   (which needs the checkout and its tag). Unblocked by: a GEN24 maintainer with
+   an upstream checkout reachable via `GNN_ROOT` or as a sibling directory.
+
+Not applicable here: GEN24 has no `inferactively-pymdp` dependency at all, so
+the fleet's `1.0.5` floor has nothing to pin — `NHIM/nhim_model.py` imports NumPy
+only and no requirements file names pymdp. Recorded so a later pass does not read
+the absence as a missing dependency.
