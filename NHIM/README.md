@@ -10,6 +10,8 @@
   `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`) and the parser-file hashes.
 - `requirements.txt` — the module's own dependency list.
 
-Validate: `python ../scripts/validate_gnn_spec.py --require-gnn`.
+Validate: `./run.sh gnn` from the repository root, which runs
+`python scripts/validate_gnn_spec.py --require-gnn --require-tag` and needs a
+GNN checkout ([`../docs/RUN_GUIDE.md`](../docs/RUN_GUIDE.md)).
 Parent guide: [`../AGENTS.md`](../AGENTS.md). Notes:
 [`../docs/nhim.md`](../docs/nhim.md).

@@ -57,6 +57,33 @@ Still not done in this pass: live model calls (no key, no personal archives) and
 - [x] ✓ Deduplicate `NHIM/NHIM_API.py` (every class defined twice, ~lines 30-570 vs ~677-1160). Completed 2026-11-01 without the heavy runtime: the surviving definitions are the ones Python actually resolved, the deterministic paths are covered by `tests/test_nhim_api.py`, and the language-model paths stay untouched. See `docs/nhim.md`.
 - [x] ✓ Add CI and a test suite. Completed 2026-11-01: `tests/` (27 tests, no key/network), `requirements-dev.txt`, `.github/workflows/ci.yml` (compileall, pytest, pinned-parser GNN validation).
 
+## Gate and documentation pass (2026-11-12)
+
+- [x] ✓ Added `run.sh` as the single gate entry point with separately runnable
+  `lint`, `test`, `docs` and `gnn` arms. There is no `types` arm: the repository
+  has no type checker.
+- [x] ✓ Rewrote `.github/workflows/ci.yml` so every gate step is a `run.sh` arm,
+  adopted the organization composite action
+  `ActiveInferenceInstitute/.github/.github/actions/setup-python-uv@7159e67315330aac8e414aebae0ad1e999a41448`,
+  and removed the duplicated work: the second dependency install now shares one
+  uv cache, and the GNN validator runs once instead of twice.
+- [x] ✓ Removed the `test_validator_passes_against_the_pinned_parser` pytest
+  wrapper. It shelled out to the same validator command the `gnn` arm runs, so a
+  gate executed the validator twice. The suite is now 26 tests and fully offline.
+- [x] ✓ Added `--require-tag` to `scripts/validate_gnn_spec.py` so the local arm
+  enforces the release-tag check that previously existed only as a CI shell
+  step; the workflow no longer carries a second copy of it.
+- [x] ✓ Added `pytest.ini` to pin the rootdir and `testpaths`, so collected node
+  IDs do not depend on a parent directory's pytest configuration.
+- [x] ✓ Added `scripts/check_docs_links.py` (relative links, hub coverage, flat
+  index coverage) and `scripts/gate_metrics.py` (generated
+  `docs/_generated/GATE_METRICS.md` with `--check`).
+- [x] ✓ Added `docs/RUN_GUIDE.md`, `docs/documentation-index.md` and
+  `docs/_generated/`, and updated the hub, the GNN page, the pipeline page, the
+  folder guides and the root README/AGENTS/CONTRIBUTING gate instructions.
+- [x] ✓ Measured every arm before and after on this host; the numbers are
+  recorded in `docs/RUN_GUIDE.md` and refreshed by `scripts/gate_metrics.py`.
+
 ## Open / deferred list (not implemented this pass)
 
 1. CTA source consolidation — behavior change, owner decision.

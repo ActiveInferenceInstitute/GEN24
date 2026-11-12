@@ -1,6 +1,9 @@
 # GEN24 documentation
 
-This directory is the documentation index for the GEN24 repository.
+This directory is the documentation hub for the GEN24 repository. The flat
+list of every page is [`documentation-index.md`](documentation-index.md).
+
+## Project documentation
 
 - [Project overview](overview.md) — purpose, scope, and current repository contents.
 - [Pipeline guide](pipeline.md) — the four active GEN-24 stages, configuration, outputs, and limitations.
@@ -9,8 +12,18 @@ This directory is the documentation index for the GEN24 repository.
 - [GNN integration](gnn.md) — the GNN specification of the NHIM inquiry agent, the upstream parser pin, and the validator.
 - [Notebook notes](notebook.md) — what `ARCANGEL1_0_2.ipynb` does and what environment it expects.
 
-Repository-level guidance:
+## Running the gate
 
+- [Gate and CI run guide](RUN_GUIDE.md) — the `./run.sh` arms, the environment,
+  the CI job mapping, and the measured cost of each arm.
+- [Generated facts](_generated/README.md) — what is generated under
+  `docs/_generated/` and which script produces it.
+- [Gate metrics](_generated/GATE_METRICS.md) — arm list, collected test count,
+  and per-arm wall times, refreshed by `scripts/gate_metrics.py`.
+
+## Repository-level guidance
+
+- [Full documentation index](documentation-index.md)
 - [README](../README.md)
 - [Agent notes](../AGENTS.md)
 - [Contributing](../CONTRIBUTING.md)
