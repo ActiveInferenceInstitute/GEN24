@@ -2,13 +2,17 @@
 
 These are the offline checks: they run without a GNN checkout. The parser-level
 conformance run is the `gnn` arm of `./run.sh`, which invokes
-``scripts/validate_gnn_spec.py --require-gnn`` once; it is deliberately not
+``scripts/validate_gnn_spec.py --require-gnn --require-tag`` once; it is deliberately not
 wrapped in a test, so the validator never runs twice in one gate.
 """
 
 import json
 import pathlib
 import re
+
+import pytest
+
+from scripts import validate_gnn_spec
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PIN = json.loads((ROOT / "NHIM" / "gnn-pin.json").read_text(encoding="utf-8"))
@@ -47,6 +51,7 @@ DECLARED_VARIABLES = (
 
 
 def test_pin_record_is_complete():
+    assert PIN["schema"] == "gnn-importer-pin/v1"
     assert PIN["repository"] == "ActiveInferenceInstitute/Generalized_Notation_Notation"
     assert PIN["release"] == "v5.0.3"
     assert re.fullmatch(r"[0-9a-f]{40}", PIN["commit"])
@@ -73,3 +78,33 @@ def test_spec_points_at_its_implementation():
     text = SPEC.read_text(encoding="utf-8")
     assert PIN["implementation"] in text
     assert (ROOT / PIN["implementation"]).exists()
+
+
+@pytest.mark.parametrize(
+    ("explicit_exists", "environment_exists", "sibling_exists", "expected"),
+    [
+        (True, True, True, "explicit"),
+        (False, True, True, "environment"),
+        (False, False, True, "Generalized_Notation_Notation"),
+        (False, False, False, None),
+    ],
+)
+def test_gnn_checkout_resolution_order(
+    tmp_path, monkeypatch, explicit_exists, environment_exists, sibling_exists, expected
+):
+    monkeypatch.setattr(validate_gnn_spec, "REPO_ROOT", tmp_path / "GEN24")
+    explicit = tmp_path / "explicit"
+    environment = tmp_path / "environment"
+    sibling = tmp_path / "Generalized_Notation_Notation"
+    for checkout, exists in (
+        (explicit, explicit_exists),
+        (environment, environment_exists),
+        (sibling, sibling_exists),
+    ):
+        if exists:
+            (checkout / ".git").mkdir(parents=True)
+    monkeypatch.setenv("GNN_ROOT", str(environment))
+
+    resolved = validate_gnn_spec.resolve_gnn_root(str(explicit))
+
+    assert resolved == (None if expected is None else (tmp_path / expected).resolve())

@@ -19,6 +19,6 @@
   "notes": [
     "Pin read from the pinned commit with 'git -C <gnn> show <commit>:<path>', never from a live working tree.",
     "The upstream parser is only needed for validation; GEN24 does not import GNN at runtime.",
-    "Re-pin procedure: update commit/release here, refresh every parser_files hash from the new commit, run scripts/validate_gnn_spec.py --require-gnn."
+    "Re-pin procedure: update commit/release here, refresh every parser_files hash from the new commit, run ./run.sh gnn to require both the checkout and its release tag."
   ]
 }

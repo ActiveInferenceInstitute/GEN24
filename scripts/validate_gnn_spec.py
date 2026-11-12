@@ -71,11 +71,11 @@ def resolve_gnn_root(explicit):
     candidates = []
     if explicit:
         candidates.append(Path(explicit))
-    candidates.append(REPO_ROOT.parent / "Generalized_Notation_Notation")
     import os
 
     if os.environ.get("GNN_ROOT"):
-        candidates.insert(0, Path(os.environ["GNN_ROOT"]))
+        candidates.append(Path(os.environ["GNN_ROOT"]))
+    candidates.append(REPO_ROOT.parent / "Generalized_Notation_Notation")
     for candidate in candidates:
         if (candidate / ".git").exists():
             return candidate.resolve()
