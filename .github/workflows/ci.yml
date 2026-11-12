@@ -1,5 +1,9 @@
 name: CI
 
+# Every gate step below is an arm of ./run.sh. Do not inline a second copy of a
+# command here: a local `./run.sh` and this workflow must run the same thing.
+# Reference: docs/RUN_GUIDE.md.
+
 on:
   push:
     branches: [main]
@@ -14,25 +18,30 @@ permissions:
 
 jobs:
   tests:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      # One pinned setup path for both jobs; the cache is keyed on the single
+      # dependency definition, so the gnn job reuses what this job resolved.
+      - uses: ActiveInferenceInstitute/.github/.github/actions/setup-python-uv@7159e67315330aac8e414aebae0ad1e999a41448
         with:
           python-version: "3.12"
+          cache-dependency-glob: "requirements-dev.txt"
+          activate-environment: "true"
 
       - name: Install test dependencies
-        run: python -m pip install --upgrade pip -r requirements-dev.txt
+        run: uv pip install -r requirements-dev.txt
 
-      - name: Compile all Python sources
-        run: python -m compileall -q .
+      - name: lint
+        run: ./run.sh lint
 
-      - name: Run the test suite
-        # The parser-level GNN test skips here; the named conformance job below
-        # provisions the pinned checkout and runs it with GNN_ROOT set.
-        run: python -m pytest tests/ -q
+      - name: test
+        run: ./run.sh test
+
+      - name: docs
+        run: ./run.sh docs
 
   gnn-conformance:
     name: gnn conformance (pinned)
@@ -40,36 +49,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+
+      - uses: ActiveInferenceInstitute/.github/.github/actions/setup-python-uv@7159e67315330aac8e414aebae0ad1e999a41448
         with:
           python-version: "3.12"
+          cache-dependency-glob: "requirements-dev.txt"
+          activate-environment: "true"
 
       - name: Install test dependencies
-        run: python -m pip install --upgrade pip -r requirements-dev.txt
+        run: uv pip install -r requirements-dev.txt
 
       - name: Fetch the pinned GNN checkout
+        # The validator reads the pinned commit with `git show` and `git archive`,
+        # so no worktree checkout is needed. It also verifies the commit, the
+        # release tag and every recorded parser hash itself.
         run: |
           set -euo pipefail
-          PIN=NHIM/gnn-pin.json
-          REPO=$(python -c "import json;print(json.load(open('$PIN'))['repository'])")
-          TAG=$(python -c "import json;print(json.load(open('$PIN'))['release'])")
-          COMMIT=$(python -c "import json;print(json.load(open('$PIN'))['commit'])")
+          REPO=$(python -c "import json;print(json.load(open('NHIM/gnn-pin.json'))['repository'])")
           git clone --quiet --filter=blob:none --no-checkout "https://github.com/${REPO}.git" "$RUNNER_TEMP/gnn"
-          git -C "$RUNNER_TEMP/gnn" checkout --quiet "$COMMIT"
-          # The validator also checks the release tag; require it to peel to the pin.
-          test "$(git -C "$RUNNER_TEMP/gnn" rev-parse "${TAG}^{commit}")" = "$COMMIT"
 
-      - name: Validate the GNN specification against the pinned parser
-        run: python scripts/validate_gnn_spec.py --gnn-root "$RUNNER_TEMP/gnn" --require-gnn
-
-      - name: Run the GNN conformance tests
+      - name: gnn
         env:
           GNN_ROOT: ${{ runner.temp }}/gnn
-        run: python -m pytest -q tests/test_gnn_spec.py
+        run: ./run.sh gnn
 
       - name: Report the resolved GNN version
         run: |
-          PIN=NHIM/gnn-pin.json
-          VERSION=$(python3 -c "import json;print(json.load(open('$PIN'))['release'].removeprefix('v'))")
+          VERSION=$(python3 -c "import json;print(json.load(open('NHIM/gnn-pin.json'))['release'].removeprefix('v'))")
           test -n "$VERSION"
           echo "gnn-version=${VERSION}" >> "$GITHUB_STEP_SUMMARY"
