@@ -1,8 +1,8 @@
 {
   "schema": "gnn-importer-pin/v1",
   "repository": "ActiveInferenceInstitute/Generalized_Notation_Notation",
-  "release": "v5.0.3",
-  "commit": "8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1",
+  "tag": "v5.0.3",
+  "revision": "8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1",
   "recorded": "2026-11-12",
   "parser_entrypoint": "gnn.parsers.markdown_parser.MarkdownGNNParser",
   "spec": "NHIM/nhim_inquiry_agent.gnn.md",
@@ -19,6 +19,6 @@
   "notes": [
     "Pin read from the pinned commit with 'git -C <gnn> show <commit>:<path>', never from a live working tree.",
     "The upstream parser is only needed for validation; GEN24 does not import GNN at runtime.",
-    "Re-pin procedure: update commit/release here, refresh every parser_files hash from the new commit, run scripts/validate_gnn_spec.py --require-gnn."
+    "Re-pin procedure: update revision/tag here, refresh every parser_files hash from the new commit, run scripts/validate_gnn_spec.py --require-gnn."
   ]
 }
