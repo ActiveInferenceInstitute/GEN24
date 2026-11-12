@@ -57,9 +57,12 @@ repository, never against a live working tree:
   (`src/gnn/parsers/*`, `src/gnn/schema/parser.py`, `docs/gnn/gnn_syntax.md`)
 
 [`NHIM/gnn-pin.json`](../NHIM/gnn-pin.json) is the record — schema
-`gnn-importer-pin/v1`, with `repository`, `release`, `commit`, `recorded`,
+`gnn-importer-pin/v1`, with `repository`, `tag`, `revision`, `recorded`,
 `parser_entrypoint`, `spec`, `implementation`, `validator` and `parser_files`.
 Treat it as the contract between this repository and the upstream parser.
+The `revision`/`tag` field names match the Education group's lead pin in
+[`courses`](https://github.com/ActiveInferenceInstitute/courses/blob/main/.github/gnn-pin.json).
+This spelling change preserves the pinned parser revision and all parser-file hashes.
 
 The CI side of that contract is recorded in
 [`../.github/GNN.md`](../.github/GNN.md): the `gnn-conformance` job key, its
@@ -110,7 +113,7 @@ pin-record and spec-structure checks. CI fetches the pinned commit and runs
 2. Keep `A` and every `B` action slice column-stochastic.
 3. Re-run `python scripts/validate_gnn_spec.py --require-gnn`; the run prints
    the specification's SHA-256, which is informational (it is not pinned).
-4. If the upstream pin moves, update `commit`/`release` in
+4. If the upstream pin moves, update `revision`/`tag` in
    `NHIM/gnn-pin.json`, refresh **every** `parser_files` hash from the new
    commit, and re-run the validator.
 

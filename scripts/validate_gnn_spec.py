@@ -84,7 +84,7 @@ def resolve_gnn_root(explicit):
 
 def verify_pin(gnn_root, pin, fail, require_tag=False):
     """Verify commit identity, the release tag, and recorded parser-file hashes."""
-    commit = pin["commit"]
+    commit = pin["revision"]
     result = _git(gnn_root, "cat-file", "-t", commit)
     if result.returncode != 0 or result.stdout.decode().strip() != "commit":
         fail(f"pinned commit {commit} is not present in {gnn_root}")
@@ -93,7 +93,7 @@ def verify_pin(gnn_root, pin, fail, require_tag=False):
         fail(f"pinned commit {commit} does not resolve to itself")
     print(f"pin commit present: {commit}")
 
-    release = pin.get("release")
+    release = pin.get("tag")
     if release:
         tagged = _git(gnn_root, "rev-parse", f"{release}^{{commit}}")
         if tagged.returncode != 0:
@@ -226,7 +226,7 @@ def main(argv=None):
     spec_path = REPO_ROOT / pin["spec"]
     print(f"spec: {spec_path.relative_to(REPO_ROOT)}")
     print(f"spec sha256: {hashlib.sha256(spec_path.read_bytes()).hexdigest()}")
-    print(f"pin: {pin['repository']} {pin['release']} {pin['commit']}")
+    print(f"pin: {pin['repository']} {pin['tag']} {pin['revision']}")
 
     gnn_root = resolve_gnn_root(args.gnn_root)
     if gnn_root is None:
@@ -247,7 +247,7 @@ def main(argv=None):
     import nhim_model  # noqa: E402
 
     try:
-        tmp, parser_class, module_path = import_pinned_parser(gnn_root, pin["commit"])
+        tmp, parser_class, module_path = import_pinned_parser(gnn_root, pin["revision"])
     except Exception as exc:  # dependency or extraction problem
         print(f"FAIL: could not import the pinned parser: {exc}", file=sys.stderr)
         return 1
