@@ -60,8 +60,10 @@ Still not done in this pass: live model calls (no key, no personal archives) and
 ## Gate and documentation pass (2026-11-12)
 
 - [x] ✓ Added `run.sh` as the single gate entry point with separately runnable
-  `lint`, `test`, `docs` and `gnn` arms. There is no `types` arm: the repository
-  has no type checker.
+  primitive arms (`lint`, `test-fast`, `docs`, `gnn`) and compositions
+  (`fast` = lint + test-fast + docs, the default; `test-full` = test-fast + gnn;
+  `all` = fast + gnn). Each primitive runs once per invocation. There is no
+  `types` arm: the repository has no type checker.
 - [x] ✓ Rewrote `.github/workflows/ci.yml` so every gate step is a `run.sh` arm,
   adopted the organization composite action
   `ActiveInferenceInstitute/.github/.github/actions/setup-python-uv@7159e67315330aac8e414aebae0ad1e999a41448`,

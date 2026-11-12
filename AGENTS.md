@@ -32,8 +32,9 @@ and [docs/gnn.md](docs/gnn.md).
 
 ```bash
 pip install -r requirements-dev.txt
-./run.sh lint test docs   # offline: compile, suite, links + generated facts
-./run.sh gnn              # needs a GNN checkout
+./run.sh                  # `fast`: lint, test-fast, docs (offline)
+./run.sh test-full        # test-fast plus gnn
+./run.sh all              # every primitive arm once; needs a GNN checkout
 ```
 
 `./run.sh` is the single gate entry point and CI runs the same arms; see

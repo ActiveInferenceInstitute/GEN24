@@ -2,6 +2,9 @@
 
 - Every gate step in `workflows/ci.yml` is an arm of `../run.sh`. Add or change
   the arm first; never inline a second copy of a command in the workflow.
+- The two jobs together run every primitive arm once: `fast` (lint, test-fast,
+  docs) plus `gnn`. Do not add a step that repeats a primitive another step
+  already ran.
 - Keep action references pinned to full commit SHAs with the release in a
   trailing comment. The organization composite action
   `ActiveInferenceInstitute/.github/.github/actions/setup-python-uv` is pinned

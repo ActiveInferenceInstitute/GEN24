@@ -38,4 +38,4 @@ The scripts create output directories as needed. Translation stages can issue ma
 
 - The call-to-action text is embedded in `4_translate_call_to_action.py`; a related source document is also present at `Inputs_and_Outputs/Entity/Shyaka/ReclAIMEd_Call_To_Action.md`. They are not automatically synchronized.
 - `Archive/` contains historical scripts with old absolute paths and should not be treated as runnable pipeline stages.
-- The repository has a test suite (`./run.sh test`) and a gate with four arms; see the [gate and CI run guide](RUN_GUIDE.md). The suite stubs the model client, so it does not prove that a live model request works.
+- The repository has a test suite (`./run.sh test-fast`) and a gate with four primitive arms and three compositions; see the [gate and CI run guide](RUN_GUIDE.md). The suite stubs the model client, so it does not prove that a live model request works.

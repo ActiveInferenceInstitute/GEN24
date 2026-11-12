@@ -4,7 +4,8 @@
 [`../../run.sh`](../../run.sh):
 
 - `tests` — installs `requirements-dev.txt` on Python 3.12, then runs
-  `./run.sh lint`, `./run.sh test` and `./run.sh docs`. Offline.
+  `./run.sh fast`, the default composition of `lint`, `test-fast` and `docs`.
+  Offline.
 - `gnn conformance (pinned)` (job key `gnn-conformance`) — fetches the commit in
   [`../../NHIM/gnn-pin.json`](../../NHIM/gnn-pin.json) without a worktree
   checkout, exports `GNN_ROOT`, and runs `./run.sh gnn`.

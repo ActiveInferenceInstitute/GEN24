@@ -34,14 +34,9 @@ jobs:
       - name: Install test dependencies
         run: uv pip install -r requirements-dev.txt
 
-      - name: lint
-        run: ./run.sh lint
-
-      - name: test
-        run: ./run.sh test
-
-      - name: docs
-        run: ./run.sh docs
+      # `fast` is the documented default: lint, test-fast, docs. Each runs once.
+      - name: fast
+        run: ./run.sh fast
 
   gnn-conformance:
     name: gnn conformance (pinned)

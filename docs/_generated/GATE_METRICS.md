@@ -13,7 +13,8 @@ block below disagrees with the repository.
 
 | Fact | Value |
 |---|---|
-| Arms (`run.sh --list`) | `lint`, `test`, `docs`, `gnn` |
+| Arms (`run.sh --list`) | `lint`, `test-fast`, `docs`, `gnn`, `test-full`, `fast`, `all` |
+| Compositions | `test-full`, `fast`, `all` |
 | Collected tests | 26 |
 
 | Test file | Tests |
@@ -33,12 +34,15 @@ them.
 
 <!-- gate-timings:start -->
 
-Observed 2026-11-12 12:53 UTC on Darwin arm64 with CPython 3.12, one run per arm, wall clock, warm filesystem cache.
+Observed 2026-11-12 12:59 UTC on Darwin arm64 with CPython 3.12, one run per arm, wall clock, warm filesystem cache.
+
+Only primitive arms are measured. A composition runs its parts once
+each, so its cost is the sum of the rows below.
 
 | Arm | Command | Wall time | Result |
 |---|---|---|---|
-| `lint` | `./run.sh lint` | 0.21s | pass |
-| `test` | `./run.sh test` | 2.90s | pass |
-| `docs` | `./run.sh docs` | 1.62s | pass |
-| `gnn` | `./run.sh gnn` | 3.13s | pass |
+| `lint` | `./run.sh lint` | 0.20s | pass |
+| `test-fast` | `./run.sh test-fast` | 3.35s | pass |
+| `docs` | `./run.sh docs` | 1.81s | pass |
+| `gnn` | `./run.sh gnn` | 3.18s | pass |
 <!-- gate-timings:end -->
