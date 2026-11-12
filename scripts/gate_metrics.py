@@ -43,6 +43,7 @@ def interpreter():
 
 
 def arms():
+    """Return [(name, kind)] from `run.sh --list`, where kind is primitive or composition."""
     result = subprocess.run(
         [str(RUN_SH), "--list"],
         cwd=ROOT,
@@ -51,7 +52,14 @@ def arms():
         stdin=subprocess.DEVNULL,
         check=True,
     )
-    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+    entries = []
+    for line in result.stdout.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        name, _, kind = line.partition(":")
+        entries.append((name.strip(), (kind or "primitive").strip()))
+    return entries
 
 
 def collected_tests():
@@ -103,6 +111,7 @@ def render_facts(facts):
         "| Fact | Value |",
         "|---|---|",
         f"| Arms (`run.sh --list`) | {', '.join(f'`{arm}`' for arm in facts['arms'])} |",
+        f"| Compositions | {', '.join(f'`{arm}`' for arm in facts['compositions']) or 'none'} |",
         f"| Collected tests | {facts['total']} |",
         "",
         "| Test file | Tests |",
@@ -120,6 +129,9 @@ def render_timings(timings, stamp, python):
         "",
         f"Observed {stamp} on {platform.system()} {platform.machine()} with "
         f"CPython {python}, one run per arm, wall clock, warm filesystem cache.",
+        "",
+        "Only primitive arms are measured. A composition runs its parts once",
+        "each, so its cost is the sum of the rows below.",
         "",
         "| Arm | Command | Wall time | Result |",
         "|---|---|---|---|",
@@ -179,19 +191,28 @@ def measure(arm):
     return elapsed, True
 
 
-def write(stamp):
+def facts_snapshot():
+    """Return the deterministic facts: arm names and kinds, and collected tests."""
+    entries = arms()
     facts = {
-        "arms": arms(),
-        "python": python_version(),
+        "arms": [name for name, _ in entries],
+        "compositions": [name for name, kind in entries if kind == "composition"],
+        "primitives": [name for name, kind in entries if kind != "composition"],
     }
     facts["total"], facts["per_file"] = collected_tests()
+    return facts
+
+
+def write(stamp):
+    facts = facts_snapshot()
+    facts["python"] = python_version()
 
     # Write the facts block first: the `docs` arm runs `--check`, which needs
     # the file to exist before the timings below are measured.
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(render(facts, [], stamp), encoding="utf-8")
 
-    timings = [(arm, *measure(arm)) for arm in facts["arms"]]
+    timings = [(arm, *measure(arm)) for arm in facts["primitives"]]
     OUTPUT.write_text(render(facts, timings, stamp), encoding="utf-8")
     print(f"wrote {OUTPUT.relative_to(ROOT).as_posix()}")
     return 0
@@ -202,8 +223,7 @@ def check():
         print(f"FAIL: {OUTPUT.relative_to(ROOT).as_posix()} is missing; run scripts/gate_metrics.py")
         return 1
 
-    facts = {"arms": arms()}
-    facts["total"], facts["per_file"] = collected_tests()
+    facts = facts_snapshot()
 
     text = OUTPUT.read_text(encoding="utf-8")
     if FACTS_START not in text or FACTS_END not in text:
@@ -223,7 +243,10 @@ def check():
         print("FAIL: the timings block markers are missing from GATE_METRICS.md")
         return 1
 
-    print(f"OK: gate metrics current ({facts['total']} tests, {len(facts['arms'])} arms)")
+    print(
+        f"OK: gate metrics current ({facts['total']} tests, "
+        f"{len(facts['primitives'])} primitive arms, {len(facts['compositions'])} compositions)"
+    )
     return 0
 
 
