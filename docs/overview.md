@@ -30,3 +30,24 @@ Counts describe the checked-in tree at the time of this review; generated artifa
 This is not a packaged Python application: there is no `pyproject.toml` and no command-line interface. The scripts are file-oriented and use paths relative to their own directory in the active stages. They should be treated as exploratory automation, not as a stable API. The repository does have a test suite (`tests/`) and a CI workflow; the NHIM inquiry model additionally has a GNN specification pinned to an upstream parser revision.
 
 The active LLM stages require a local `LLM_keys.key` file and a configured OpenAI-compatible model. Do not place credentials in tracked files. For details, see [the pipeline guide](pipeline.md) and [GNN integration](gnn.md).
+
+## Education contract migration — blocked
+
+The [Education workflow contract](https://github.com/ActiveInferenceInstitute/courses/blob/main/docs/workflows/education.md)
+requires a bundle at `specs/education/gen24.json` for `GEN-24/` and `NHIM/`,
+with learning objectives quoted verbatim from authored sources. Its schema
+requires a nonempty `objectives` array for each unit.
+
+The [pipeline guide](pipeline.md), [pipeline README](../GEN-24/README.md),
+[NHIM notes](nhim.md), and [NHIM README](../NHIM/README.md) describe implementation
+and operation, not learner objectives. No authored learning objectives were
+found for these units. Implementation descriptions and model optimization
+goals must not be relabeled as learning objectives.
+
+The bundle and adoption pointer are therefore not emitted. A maintainer must
+author learning objectives for both units before a faithful bundle can be
+transcribed and validated; no topic mapping or prerequisite relation is inferred.
+The independent pin-normalization part is implemented: `NHIM/gnn-pin.json`
+uses the lead's `revision`/`tag` spelling, with its validator, tests and CI
+consumer updated. The migration PR must remain open until the bundle blocker
+is resolved.
