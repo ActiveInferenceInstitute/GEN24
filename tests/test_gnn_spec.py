@@ -1,25 +1,18 @@
-"""Checks for the GNN specification, its pin record, and the validator.
+"""Checks for the GNN specification and its pin record.
 
-The parser-level validation runs only when the GNN checkout is present; the
-pin-record and specification-structure checks always run.
+These are the offline checks: they run without a GNN checkout. The parser-level
+conformance run is the `gnn` arm of `./run.sh`, which invokes
+``scripts/validate_gnn_spec.py --require-gnn`` once; it is deliberately not
+wrapped in a test, so the validator never runs twice in one gate.
 """
 
 import json
 import pathlib
 import re
-import subprocess
-import sys
-
-import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PIN = json.loads((ROOT / "NHIM" / "gnn-pin.json").read_text(encoding="utf-8"))
 SPEC = ROOT / PIN["spec"]
-
-sys.path.insert(0, str(ROOT / "scripts"))
-import validate_gnn_spec  # noqa: E402
-
-GNN_ROOT = validate_gnn_spec.resolve_gnn_root(None)
 
 REQUIRED_SECTIONS = (
     "GNNSection",
@@ -80,15 +73,3 @@ def test_spec_points_at_its_implementation():
     text = SPEC.read_text(encoding="utf-8")
     assert PIN["implementation"] in text
     assert (ROOT / PIN["implementation"]).exists()
-
-
-@pytest.mark.skipif(GNN_ROOT is None, reason="GNN checkout not present")
-def test_validator_passes_against_the_pinned_parser():
-    result = subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / "validate_gnn_spec.py"), "--require-gnn"],
-        capture_output=True,
-        text=True,
-    )
-    assert result.returncode == 0, result.stdout + result.stderr
-    assert "VALID" in result.stdout
-    assert "hash ok" in result.stdout

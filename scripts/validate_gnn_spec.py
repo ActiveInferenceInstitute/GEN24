@@ -15,7 +15,7 @@ Checks performed (all against the pinned commit, never a live working tree):
 
 Usage:
 
-    python scripts/validate_gnn_spec.py [--gnn-root PATH] [--require-gnn]
+    python scripts/validate_gnn_spec.py [--gnn-root PATH] [--require-gnn] [--require-tag]
 
 The GNN checkout is resolved from ``--gnn-root``, then ``$GNN_ROOT``, then the
 sibling directory ``../Generalized_Notation_Notation``. When it is absent the
@@ -82,8 +82,8 @@ def resolve_gnn_root(explicit):
     return None
 
 
-def verify_pin(gnn_root, pin, fail):
-    """Verify commit identity and recorded parser-file hashes."""
+def verify_pin(gnn_root, pin, fail, require_tag=False):
+    """Verify commit identity, the release tag, and recorded parser-file hashes."""
     commit = pin["commit"]
     result = _git(gnn_root, "cat-file", "-t", commit)
     if result.returncode != 0 or result.stdout.decode().strip() != "commit":
@@ -97,7 +97,10 @@ def verify_pin(gnn_root, pin, fail):
     if release:
         tagged = _git(gnn_root, "rev-parse", f"{release}^{{commit}}")
         if tagged.returncode != 0:
-            print(f"release tag {release}: not present locally (not checked)")
+            if require_tag:
+                fail(f"release tag {release} is not present in {gnn_root}")
+            else:
+                print(f"release tag {release}: not present locally (not checked)")
         elif tagged.stdout.decode().strip() == commit:
             print(f"release tag {release}: points at the pinned commit")
         else:
@@ -206,6 +209,11 @@ def main(argv=None):
         action="store_true",
         help="fail (exit 2) instead of skipping when the GNN checkout is absent",
     )
+    parser_args.add_argument(
+        "--require-tag",
+        action="store_true",
+        help="fail when the release tag is missing instead of reporting it unchecked",
+    )
     args = parser_args.parse_args(argv)
 
     failures = []
@@ -231,7 +239,7 @@ def main(argv=None):
         return 0
     print(f"GNN checkout: {gnn_root}")
 
-    verify_pin(gnn_root, pin, fail)
+    verify_pin(gnn_root, pin, fail, require_tag=args.require_tag)
     if failures:
         return 1
 
