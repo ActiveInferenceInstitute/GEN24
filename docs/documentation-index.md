@@ -53,5 +53,5 @@ it.
 - [`../scripts/README.md`](../scripts/README.md) — the validator and the gate
   helper scripts.
 - [`../tests/README.md`](../tests/README.md) — the offline test suite.
-- [`../.github/README.md`](../.github/README.md) — workflows and the GNN
+- [`../.github/WORKFLOWS.md`](../.github/WORKFLOWS.md) — workflows and the GNN
   conformance pointer.
