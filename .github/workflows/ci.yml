@@ -70,6 +70,6 @@ jobs:
 
       - name: Report the resolved GNN version
         run: |
-          VERSION=$(python3 -c "import json;print(json.load(open('NHIM/gnn-pin.json'))['release'].removeprefix('v'))")
+          VERSION=$(python3 -c "import json;print(json.load(open('NHIM/gnn-pin.json'))['tag'].removeprefix('v'))")
           test -n "$VERSION"
           echo "gnn-version=${VERSION}" >> "$GITHUB_STEP_SUMMARY"
