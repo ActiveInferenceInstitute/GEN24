@@ -147,26 +147,35 @@ def check_spec(spec_path, parser, model_module, fail):
     result = parser().parse_file(str(spec_path))
     if not result.success or result.errors:
         fail(f"spec did not parse cleanly: success={result.success} errors={result.errors}")
+        return
 
     model = result.model
+    if model is None:
+        fail("spec parse produced no model")
+        return
     issues = model.validate_structure()
     if issues:
         fail(f"spec structure issues: {issues}")
+        return
 
     for name, dimensions in EXPECTED_DIMENSIONS.items():
         variable = model.get_variable_by_name(name)
         if variable is None:
             fail(f"spec is missing variable {name}")
+            return
         if list(variable.dimensions) != dimensions:
             fail(f"{name} dimensions {variable.dimensions} != {dimensions}")
+            return
     print(f"variables ok: {len(EXPECTED_DIMENSIONS)} declared with expected dimensions")
 
     import numpy as np
 
-    for name in EXPECTED_PARAMETERS:
-        parameter = model.get_parameter_by_name(name)
-        if parameter is None:
-            fail(f"spec is missing parameter {name}")
+    missing_parameters = [
+        name for name in EXPECTED_PARAMETERS if model.get_parameter_by_name(name) is None
+    ]
+    if missing_parameters:
+        fail(f"spec is missing parameters: {', '.join(missing_parameters)}")
+        return
 
     spec_A = np.array(model.get_parameter_by_name("A").value, dtype=float)
     if not np.allclose(spec_A, model_module.A, atol=TOLERANCE):

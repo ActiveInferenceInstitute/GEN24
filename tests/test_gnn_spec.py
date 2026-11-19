@@ -9,6 +9,7 @@ wrapped in a test, so the validator never runs twice in one gate.
 import json
 import pathlib
 import re
+from types import SimpleNamespace
 
 import pytest
 
@@ -108,3 +109,15 @@ def test_gnn_checkout_resolution_order(
     resolved = validate_gnn_spec.resolve_gnn_root(str(explicit))
 
     assert resolved == (None if expected is None else (tmp_path / expected).resolve())
+
+
+def test_invalid_parse_reports_error_without_inspecting_model():
+    class FailedParser:
+        def parse_file(self, _path):
+            return SimpleNamespace(success=False, errors=["invalid specification"], model=None)
+
+    failures = []
+    validate_gnn_spec.check_spec(SPEC, FailedParser, None, failures.append)
+
+    assert len(failures) == 1
+    assert "invalid specification" in failures[0]
