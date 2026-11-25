@@ -1,20 +1,20 @@
 {
   "schema": "gnn-importer-pin/v1",
   "repository": "ActiveInferenceInstitute/Generalized_Notation_Notation",
-  "tag": "v5.0.3",
-  "revision": "8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1",
-  "recorded": "2026-11-12",
+  "tag": "v5.1.0",
+  "revision": "75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf",
+  "recorded": "2026-11-24",
   "parser_entrypoint": "gnn.parsers.markdown_parser.MarkdownGNNParser",
   "spec": "NHIM/nhim_inquiry_agent.gnn.md",
   "implementation": "NHIM/nhim_model.py",
   "validator": "scripts/validate_gnn_spec.py",
   "parser_files": {
-    "src/gnn/parsers/markdown_parser.py": "24a30ea7e67d597e891fe16e521e13be5f2013af90eeb282cfe257940b281e82",
+    "src/gnn/parsers/markdown_parser.py": "150f2994dc7e95bea30e7b226d86220eb319fcff64489503df20a307cf7b097c",
     "src/gnn/parsers/markdown_parser_parameter.py": "2e94e88c79b8998387f2a1c53fe88dcc45adc498c47c30f7ec3bd577a8072061",
-    "src/gnn/parsers/common.py": "c27da82a05058ec2f96b4c675374a848e64535122bf3a63155a47b8b23e3076e",
+    "src/gnn/parsers/common.py": "ade640beffbf18e6f99dc7b9e3ac5993e5a183652da096ceeb0014b77f3f5527",
     "src/gnn/parsers/converters.py": "e1ef9366ee5f3014fed75867f1b02c4f141b8496819b3bb47d6eaa5915fed9c0",
     "src/gnn/schema/parser.py": "4913fdd970ea046917bd1f02460bf3b3c3cbe42cca47651e9a8b95cd064506f4",
-    "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c"
+    "docs/gnn/gnn_syntax.md": "4656e7266c32a63acc3a0f14d19496d9e55857bac6a75f5a3ecf1d546e97cacc"
   },
   "notes": [
     "Pin read from the pinned commit with 'git -C <gnn> show <commit>:<path>', never from a live working tree.",

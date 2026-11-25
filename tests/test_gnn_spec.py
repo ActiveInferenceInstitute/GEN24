@@ -54,7 +54,7 @@ DECLARED_VARIABLES = (
 def test_pin_record_is_complete():
     assert PIN["schema"] == "gnn-importer-pin/v1"
     assert PIN["repository"] == "ActiveInferenceInstitute/Generalized_Notation_Notation"
-    assert PIN["tag"] == "v5.0.3"
+    assert PIN["tag"] == "v5.1.0"
     assert re.fullmatch(r"[0-9a-f]{40}", PIN["revision"])
     assert PIN["parser_entrypoint"] == "gnn.parsers.markdown_parser.MarkdownGNNParser"
     assert PIN["parser_files"], "the pin must record the parser files it depends on"

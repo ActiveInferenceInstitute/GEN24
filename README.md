@@ -67,7 +67,7 @@ The repository's only generative model is the **NHIM inquiry agent**, specified 
 - Implementation: `NHIM/nhim_model.py`
 - Validator: `python scripts/validate_gnn_spec.py` (add `--require-gnn` to fail instead of skipping when no GNN checkout is present)
 
-The specification is validated against the pinned upstream parser revision recorded in `NHIM/gnn-pin.json` (GNN `v5.0.3`, commit `8f293d9b`). The `GEN-24/` pipeline defines no generative model, so it carries no specification. See [GNN integration](docs/gnn.md) for the model, the pin, and the re-pin procedure.
+The specification is validated against the pinned upstream parser revision recorded in `NHIM/gnn-pin.json` (GNN `v5.1.0`, commit `75c834bd`). The `GEN-24/` pipeline defines no generative model, so it carries no specification. See [GNN integration](docs/gnn.md) for the model, the pin, and the re-pin procedure.
 
 GNN maintains a [downstream adoption guide](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/blob/main/docs/gnn/integration/downstream_adoption.md) for repositories that consume the notation.
 

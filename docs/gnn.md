@@ -50,8 +50,8 @@ The specification is validated against a pinned revision of the upstream
 repository, never against a live working tree:
 
 - Repository: `ActiveInferenceInstitute/Generalized_Notation_Notation`
-- Release: `v5.0.3`, commit `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`
-  (`Merge pull request #292 ...`, 2026-10-31)
+- Release: `v5.1.0`, commit `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`
+  (`Release GNN 5.1.0 with the downstream importer registry (#385)`, 2026-11-12)
 - Parser entrypoint: `gnn.parsers.markdown_parser.MarkdownGNNParser`
 - Recorded SHA-256 for every parser file the validator depends on
   (`src/gnn/parsers/*`, `src/gnn/schema/parser.py`, `docs/gnn/gnn_syntax.md`)
