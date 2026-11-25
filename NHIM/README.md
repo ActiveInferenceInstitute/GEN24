@@ -6,8 +6,8 @@
 - `NHIM_API.py` — experimental sketch with deliberately lazy spaCy,
   Transformers and Matplotlib imports; the deterministic path runs with NumPy
   alone.
-- `gnn-pin.json` — the pinned parser revision (`v5.0.3`, commit
-  `8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1`) and the parser-file hashes.
+- `gnn-pin.json` — the pinned parser revision (`v5.1.0`, commit
+  `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`) and the parser-file hashes.
 - `requirements.txt` — the module's own dependency list.
 
 Validate: `./run.sh gnn` from the repository root, which runs

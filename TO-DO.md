@@ -14,7 +14,7 @@ Legend: `[ ]` open · `[x]` completed (✓ with commit) · `[~]` deferred (reaso
 
 - [x] ✓ Added the canonical discrete model of the NHIM inquiry loop, `NHIM/nhim_model.py` (NumPy only).
 - [x] ✓ Specified that model in Generalized Notation Notation: `NHIM/nhim_inquiry_agent.gnn.md`.
-- [x] ✓ Pinned the upstream parser revision and its file hashes in `NHIM/gnn-pin.json` (GNN `v5.0.3`, commit `8f293d9b`).
+- [x] ✓ Pinned the upstream parser revision and its file hashes in `NHIM/gnn-pin.json` (GNN `v5.1.0`, commit `75c834bd`).
 - [x] ✓ Added `scripts/validate_gnn_spec.py`, which validates the spec against the pinned parser (never a live tree) and compares `A`/`B`/`C`/`D` with the implementation.
 - [x] ✓ Deduplicated `NHIM/NHIM_API.py` (every class was defined twice), removed undefined-name bugs, made heavy imports lazy, and put the interactive loop behind `if __name__ == "__main__":`.
 - [x] ✓ Added a test suite (`tests/`, 27 tests) covering the model, the spec and pin record, the NHIM sketch's deterministic paths, and the pipeline modules with a stubbed client.
@@ -131,13 +131,6 @@ Still not done in this pass: live model calls (no key, no personal archives) and
    rewrote the pin's re-pin note; `git merge-tree --write-tree origin/main
    workflows/migration` reports the content conflict. Unblocked by: whoever
    resumes the migration — rebase it, or split the pin change into its own PR.
-8. Re-pin from GNN `v5.0.3` (`8f293d9b`) to `v5.1.0`
-   (`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, the tag present in the upstream
-   checkout), which the rest of the importer fleet already carries. Nothing
-   external blocks it: the recorded procedure is to update `commit`/`release`
-   and every `parser_files` hash from the new commit, then run `./run.sh gnn`
-   (which needs the checkout and its tag). Unblocked by: a GEN24 maintainer with
-   an upstream checkout reachable via `GNN_ROOT` or as a sibling directory.
 
 Not applicable here: GEN24 has no `inferactively-pymdp` dependency at all, so
 the fleet's `1.0.5` floor has nothing to pin — `NHIM/nhim_model.py` imports NumPy
